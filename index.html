@@ -1113,9 +1113,18 @@ async function lookupWord() {
 
     let syllableHtml = '';
     if (syllables) {
-      syllableHtml = `<div style="margin-bottom:6px;">
+      syllableHtml = `<div style="margin-bottom:8px;">
         <span style="font-size:11px;color:var(--dict-muted);text-transform:uppercase;letter-spacing:0.05em;">Syllables · </span>
         <span class="dict-syllables" style="display:inline;">${syllables}</span>
+      </div>`;
+    } else {
+      // No IPA available — show manual input
+      syllableHtml = `<div style="margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+        <span style="font-size:11px;color:var(--dict-muted);text-transform:uppercase;letter-spacing:0.05em; white-space:nowrap;">Syllables · </span>
+        <input type="text" id="manualSyllables" placeholder="e.g. con · VE · nor"
+          style="border:none; border-bottom:2px solid var(--dict-border); background:transparent; color:var(--dict-text); font-family:'DM Sans',sans-serif; font-size:13px; padding:2px 6px; outline:none; flex:1;"
+          oninput="updatePendingSyllables(this.value)" />
+        <span style="font-size:11px; color:var(--text-hint); font-style:italic;">type manually</span>
       </div>`;
     }
 
@@ -1276,6 +1285,10 @@ function splitWordIntoSyllables(word, count) {
 
 function updatePendingUkUsage(val) {
   if (pendingDict) pendingDict.dict_uk_usage = val;
+}
+
+function updatePendingSyllables(val) {
+  if (pendingDict) pendingDict.dict_syllables = val;
 }
 
 // ── SPEAK ─────────────────────────────────────────────────
