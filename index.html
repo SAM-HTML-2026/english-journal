@@ -276,8 +276,12 @@
     .filter-btn { padding: 4px 10px; font-size: 12px; }
   }
 
-  @media (max-width: 400px) {
-    .nav-actions .btn:nth-child(1) { display: none; }
+  @media (max-width: 480px) {
+    #settingsBtn { padding: 6px 8px; font-size: 0; }
+    #settingsBtn::before { content: '⚙'; font-size: 16px; }
+    #giuNavBtn { padding: 6px 10px; font-size: 12px; }
+    #addEntryBtn { padding: 6px 10px; font-size: 12px; }
+    .nav-actions { gap: 5px; }
     .scenario-grid { grid-template-columns: 1fr; }
     .giu-sc-nav { gap: 4px; }
     .giu-sc-pill { font-size: 11px; padding: 4px 8px; }
@@ -411,7 +415,7 @@
 <nav>
   <div class="nav-logo">My English <span>Journal</span></div>
   <div class="nav-actions">
-    <button class="btn" id="giuNavBtn">📖 Grammar in Use</button>
+    <button class="btn" id="giuNavBtn" style="white-space:nowrap;">📖 Grammar in Use</button>
     <button class="btn" id="settingsBtn">⚙ Settings</button>
     <button class="btn btn-primary" id="addEntryBtn">+ Add Entry</button>
   </div>
