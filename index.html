@@ -1099,7 +1099,7 @@ async function lookupWord() {
       const defObj = meaning.definitions?.[0] || {};
       definition = defObj.definition || '';
       dictExample = defObj.example || '';
-      syllables = ''; // Wiktionary doesn't provide syllables
+      syllables = pron ? syllablesFromIPA(word, pron) : '';
     }
 
     if (!definition) {
@@ -1157,18 +1157,121 @@ async function lookupWord() {
 
 // Build syllable display from MW headword + pronunciation
 function buildSyllablesFromMW(hwRaw, mwPron) {
-  // hwRaw = "re-sil-ient", mwPron = "ri-ˈzi-lē-ənt"
-  // Find which syllable has primary stress ˈ
   const syllableList = hwRaw.split('-');
   if (!mwPron) return syllableList.map(s => escHtml(s)).join(' · ');
-
   const pronSyllables = mwPron.split('-');
   const stressIndex = pronSyllables.findIndex(s => s.includes('ˈ'));
-
   return syllableList.map((s, i) => {
     if (i === stressIndex) return `<span class="stressed">${escHtml(s)}</span>`;
     return escHtml(s);
   }).join(' · ');
+}
+
+function syllablesFromIPA(word, ipa) {
+  // Clean IPA — remove slashes and brackets
+  const clean = ipa.replace(/[\/\[\]]/g, '').trim();
+  if (!clean) return escHtml(word);
+
+  // IPA vowel sounds — these mark syllable nuclei
+  const vowels = 'aɑæeɛəɪiɔoʊuʌœøɐɒɜɝɞʏʉɨʌ';
+  const dipthongs = ['aɪ','aʊ','eɪ','ɔɪ','oʊ','ɪə','eə','ʊə'];
+
+  // Find stress marker position in IPA
+  const stressPos = clean.indexOf('ˈ');
+  const secStressPos = clean.indexOf('ˌ');
+
+  // Count syllables by counting vowel clusters in IPA
+  let syllableCount = 0;
+  let inVowel = false;
+  for (let i = 0; i < clean.length; i++) {
+    const ch = clean[i];
+    if (ch === 'ˈ' || ch === 'ˌ') continue;
+    if (vowels.includes(ch)) {
+      if (!inVowel) { syllableCount++; inVowel = true; }
+    } else { inVowel = false; }
+  }
+  if (syllableCount <= 1) return `<span class="stressed">${escHtml(word)}</span>`;
+
+  // Split word into syllables using basic English rules
+  const w = word.toLowerCase();
+  const parts = splitWordIntoSyllables(w, syllableCount);
+
+  // Find which syllable is stressed using IPA stress marker
+  // Count vowel groups before the stress marker
+  let stressedSyllable = 0;
+  if (stressPos >= 0) {
+    let vCount = 0; let wasVowel = false;
+    const engVowels = 'aeiou';
+    for (let i = 0; i < stressPos && i < clean.length; i++) {
+      const ch = clean[i];
+      if (ch === 'ˈ' || ch === 'ˌ') continue;
+      if (vowels.includes(ch)) { if (!wasVowel) { vCount++; wasVowel = true; } }
+      else { wasVowel = false; }
+    }
+    stressedSyllable = vCount;
+  }
+
+  return parts.map((p, i) => {
+    if (i === stressedSyllable) return `<span class="stressed">${escHtml(p)}</span>`;
+    return escHtml(p);
+  }).join(' · ');
+}
+
+function splitWordIntoSyllables(word, count) {
+  if (count === 1) return [word];
+  if (count >= word.length) return word.split('');
+
+  // Simple English syllabification rules
+  const vowels = 'aeiou';
+  const result = [];
+  let current = '';
+  let syllablesSoFar = 0;
+  const remaining = count;
+
+  // Find vowel positions
+  const vowelPos = [];
+  for (let i = 0; i < word.length; i++) {
+    if (vowels.includes(word[i]) && (i === 0 || !vowels.includes(word[i-1]))) {
+      vowelPos.push(i);
+    }
+  }
+
+  if (vowelPos.length !== count) {
+    // Fallback: split as evenly as possible
+    const chunkSize = Math.ceil(word.length / count);
+    const parts = [];
+    for (let i = 0; i < word.length; i += chunkSize) {
+      parts.push(word.slice(i, i + chunkSize));
+    }
+    return parts;
+  }
+
+  // Split between vowel groups
+  const cuts = [];
+  for (let i = 0; i < vowelPos.length - 1; i++) {
+    const v1 = vowelPos[i];
+    const v2 = vowelPos[i + 1];
+    const between = word.slice(v1, v2).replace(/^[aeiou]+/, '');
+    const consonants = between.replace(/[aeiou]/g, '');
+    // Cut after first consonant if multiple, or before consonant if single
+    if (consonants.length === 0) {
+      cuts.push(v2);
+    } else if (consonants.length === 1) {
+      cuts.push(v2 - consonants.length);
+    } else {
+      cuts.push(v1 + between.search(/[^aeiou]/) + 1 + (between.match(/^[aeiou]*/)[0].length));
+    }
+  }
+
+  let prev = 0;
+  for (const cut of cuts) {
+    if (cut > prev && cut < word.length) {
+      result.push(word.slice(prev, cut));
+      prev = cut;
+    }
+  }
+  result.push(word.slice(prev));
+  return result.filter(Boolean);
 }
 
 function updatePendingUkUsage(val) {
