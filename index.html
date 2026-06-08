@@ -535,8 +535,24 @@ async function supaFetch(path, options = {}) {
 
 // ── INIT ──────────────────────────────────────────────────
 function init() {
-  document.getElementById('appScreen').style.display = 'block';
-  loadEntries();
+  const hash = location.hash.replace('#', '');
+  if (hash === 'giu') {
+    document.getElementById('appScreen').style.display = 'none';
+    document.getElementById('giuScreen').classList.add('active');
+    loadGiuReflections();
+    renderGiuList();
+  } else if (hash.startsWith('giu-unit-')) {
+    // e.g. giu-unit-1-learn or giu-unit-1-exercise
+    const parts = hash.split('-');
+    const unitId = parseInt(parts[2]);
+    const tab = parts[3] || 'learn';
+    document.getElementById('appScreen').style.display = 'none';
+    document.getElementById('giuScreen').classList.add('active');
+    loadGiuReflections().then(() => openGiuUnit(unitId, tab));
+  } else {
+    document.getElementById('appScreen').style.display = 'block';
+    loadEntries();
+  }
 }
 
 // ── LOAD ──────────────────────────────────────────────────
@@ -1373,6 +1389,7 @@ function showGIU() {
   document.getElementById('giuScreen').classList.add('active');
   loadGiuReflections();
   renderGiuList();
+  location.hash = 'giu';
 }
 
 async function loadGiuReflections() {
@@ -1400,6 +1417,7 @@ async function saveGiuReflection(unitId, label, text) {
 function showJournal() {
   document.getElementById('giuScreen').classList.remove('active');
   document.getElementById('appScreen').style.display = 'block';
+  location.hash = '';
 }
 
 function renderGiuList() {
@@ -1423,7 +1441,7 @@ function renderGiuList() {
   }).join('');
 }
 
-function openGiuUnit(id) {
+function openGiuUnit(id, tab) {
   currentGiuUnit = GIU_UNITS.find(u => u.id === id);
   if (!currentGiuUnit) return;
   currentScenarioIndex = 0;
@@ -1433,10 +1451,17 @@ function openGiuUnit(id) {
   document.getElementById('giuUnitTitle').textContent = currentGiuUnit.title;
   renderGiuLearn();
   renderGiuExercises();
+  const activeTab = tab || 'learn';
   document.querySelectorAll('.giu-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.giu-panel').forEach(p => p.classList.remove('active'));
-  document.querySelector('.giu-tab').classList.add('active');
-  document.getElementById('giuLearnPanel').classList.add('active');
+  if (activeTab === 'exercise') {
+    document.querySelectorAll('.giu-tab')[1].classList.add('active');
+    document.getElementById('giuExercisePanel').classList.add('active');
+  } else {
+    document.querySelector('.giu-tab').classList.add('active');
+    document.getElementById('giuLearnPanel').classList.add('active');
+  }
+  location.hash = 'giu-unit-' + id + '-' + activeTab;
 }
 
 function switchGiuTab(tab, btn) {
@@ -1444,6 +1469,7 @@ function switchGiuTab(tab, btn) {
   document.querySelectorAll('.giu-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById(tab === 'learn' ? 'giuLearnPanel' : 'giuExercisePanel').classList.add('active');
+  if (currentGiuUnit) location.hash = 'giu-unit-' + currentGiuUnit.id + '-' + tab;
 }
 
 const SC_PILL_CLASSES = ['a','b','c','d','e','f','g','h'];
@@ -1649,6 +1675,7 @@ document.getElementById('giuNavBtn').addEventListener('click', showGIU);
 document.getElementById('giuBackBtn').addEventListener('click', () => {
   document.getElementById('giuListView').style.display = 'block';
   document.getElementById('giuDetailView').style.display = 'none';
+  location.hash = 'giu';
 });
 // Override journal nav logo to go back
 document.querySelector('.nav-logo').style.cursor = 'pointer';
