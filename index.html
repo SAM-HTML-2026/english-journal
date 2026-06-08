@@ -298,6 +298,8 @@
   .giu-check-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
   .giu-check-btn { padding: 8px 20px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
   .giu-check-btn:hover { background: var(--accent-hover); }
+  .giu-reset-btn { padding: 8px 16px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-strong); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .giu-reset-btn:hover { border-color: #c0392b; color: #c0392b; }
   .giu-score { font-size: 13px; color: var(--text-muted); }
   .giu-score span { color: var(--accent); font-weight: 500; }
   /* UNIT LIST */
@@ -1440,6 +1442,7 @@ function renderGiuExercise(ex) {
     ${body}
     <div class="giu-check-row">
       <button class="giu-check-btn" onclick="checkExercise('${ex.id}')">Check answers</button>
+      <button class="giu-reset-btn" onclick="resetExercise('${ex.id}')">↺ Reset</button>
       <span class="giu-score" id="score-${ex.id}"></span>
     </div>
   </div>`;
@@ -1457,7 +1460,6 @@ function checkExercise(exId) {
     total++;
     const userVal = input.value.trim().toLowerCase();
     const correctVal = item.answer.toLowerCase();
-    // Allow partial match — user answer must contain key words
     const isCorrect = userVal === correctVal || correctVal.includes(userVal) && userVal.length > 2;
     input.classList.remove('correct','wrong');
     input.classList.add(isCorrect ? 'correct' : 'wrong');
@@ -1466,6 +1468,20 @@ function checkExercise(exId) {
   });
   const scoreEl = document.getElementById(`score-${exId}`);
   scoreEl.innerHTML = `<span>${correct}/${total}</span> correct`;
+}
+
+function resetExercise(exId) {
+  const ex = currentGiuUnit.exercises.find(e => e.id === exId);
+  if (!ex) return;
+  const items = ex.items || ex.left.map((_, i) => ({ answer: ex.answers[i] }));
+  items.forEach((item, i) => {
+    const input = document.getElementById(`ex-${exId}-${i}`);
+    const reveal = document.getElementById(`ans-${exId}-${i}`);
+    if (input) { input.value = ''; input.classList.remove('correct','wrong'); }
+    if (reveal) reveal.classList.remove('show');
+  });
+  const scoreEl = document.getElementById(`score-${exId}`);
+  if (scoreEl) scoreEl.innerHTML = '';
 }
 
 // Nav events
