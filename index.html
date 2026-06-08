@@ -342,6 +342,23 @@
   .giu-unit-card-title { font-family: 'Lora', serif; font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 12px; line-height: 1.4; }
   .giu-unit-progress { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
   .giu-unit-progress-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
+  /* KEY INSIGHT */
+  .giu-insight { background: #fdf8e8; border: 1px solid #f0d060; border-radius: var(--radius); padding: 12px 14px; margin-bottom: 16px; }
+  .giu-insight-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a6a00; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+  .giu-insight-text { font-size: 13px; color: #5a4400; line-height: 1.7; }
+  .giu-insight-text strong { color: #3a2a00; }
+  .giu-insight-text .not { color: #a32d2d; font-style: italic; }
+  /* REFLECTION */
+  .giu-reflection { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .giu-reflection-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-hint); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+  .giu-reflection textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; line-height: 1.6; resize: vertical; min-height: 80px; outline: none; transition: border-color 0.15s; }
+  .giu-reflection textarea:focus { border-color: var(--accent); }
+  .giu-reflection textarea::placeholder { color: var(--text-hint); }
+  .giu-reflection-save { margin-top: 8px; display: flex; align-items: center; gap: 8px; }
+  .giu-save-btn { padding: 5px 14px; background: transparent; border: 1px solid var(--border-strong); border-radius: var(--radius); color: var(--text-muted); font-size: 12px; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.15s; }
+  .giu-save-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .giu-save-status { font-size: 12px; color: var(--accent); display: none; }
+  .giu-save-status.show { display: inline; }
 </style>
 </head>
 <body>
@@ -1212,6 +1229,7 @@ const GIU_UNITS = [
     {
       label: 'A',
       rule: 'am/is/are + -ing = action happening now, at the time of speaking. The action is not finished.',
+      insight: 'The <strong>formula</strong> is the foundation: subject + <strong>am/is/are</strong> + <strong>verb-ing</strong>. This is the structure all other scenarios build on. Master this before moving to B, C, D.',
       body: [
         { type: 'text', content: 'Sarah is in her car. She is on her way to work. She\'s <strong>driving</strong> to work. (= She <strong>is driving</strong>...)' },
         { type: 'text', content: 'This means: she is driving <em>now</em>, at the time of speaking. The action is not finished.' },
@@ -1243,6 +1261,7 @@ const GIU_UNITS = [
     {
       label: 'C',
       rule: 'You can use the present continuous with today / this week / this year etc. (periods around now)',
+      insight: 'Key difference from B: B focuses on a specific action in progress. C focuses on a <strong>time period</strong> (today, this week, this year). Both use present continuous, but C answers the question <em>"what is happening in your life these days?"</em> not <em>"what are you doing right now?"</em>',
       body: [
         { type: 'text', content: 'A: You\'re <strong>working</strong> hard <strong>today</strong>. <span class="not">(not You work hard today)</span>' },
         { type: 'text', content: 'B: Yes, I have a lot to do.' },
@@ -1252,6 +1271,7 @@ const GIU_UNITS = [
     {
       label: 'D',
       rule: 'We use the present continuous when we talk about a change that has started to happen.',
+      insight: 'This is the most distinct scenario. The key verbs here are <strong>change verbs</strong> — getting, becoming, rising, falling. If you can replace the verb with "changing", present continuous is likely correct. <span class="not">Not</span>: "The population increases" — the continuous form shows the change is <em>already in motion.</em>',
       body: [
         { type: 'text', content: 'We often use these verbs in this way:' },
         { type: 'cluster', words: ['getting','becoming','starting','beginning','changing','improving','increasing','rising','falling','growing'] },
@@ -1344,11 +1364,36 @@ const GIU_UNITS = [
 let currentGiuUnit = null;
 let currentScenarioIndex = 0;
 let comfortableMap = {}; // scenarioKey -> bool
+let reflectionsMap = {}; // unitId-label -> text
+let reflectionDebounce = null;
 
 function showGIU() {
   document.getElementById('appScreen').style.display = 'none';
   document.getElementById('giuScreen').classList.add('active');
+  loadGiuReflections();
   renderGiuList();
+}
+
+async function loadGiuReflections() {
+  try {
+    const rows = await supaFetch('giu_reflections?select=unit_id,scenario_label,reflection');
+    rows.forEach(r => {
+      reflectionsMap[r.unit_id + '-' + r.scenario_label] = r.reflection || '';
+    });
+  } catch(e) { console.warn('Could not load reflections:', e); }
+}
+
+async function saveGiuReflection(unitId, label, text) {
+  const statusEl = document.getElementById('ref-status-' + unitId + '-' + label);
+  try {
+    await supaFetch('giu_reflections', {
+      method: 'POST',
+      headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify({ unit_id: unitId, scenario_label: label, reflection: text, updated_at: new Date().toISOString() })
+    });
+    reflectionsMap[unitId + '-' + label] = text;
+    if (statusEl) { statusEl.classList.add('show'); setTimeout(() => statusEl.classList.remove('show'), 2000); }
+  } catch(e) { console.warn('Save reflection error:', e); }
 }
 
 function showJournal() {
@@ -1431,13 +1476,33 @@ function renderGiuLearn() {
   }).join('');
 
   const cls = SC_PILL_CLASSES[i] || 'a';
+  const insightHtml = sc.insight ? `
+    <div class="giu-insight">
+      <div class="giu-insight-label">🔑 Key insight</div>
+      <div class="giu-insight-text">${sc.insight}</div>
+    </div>` : '';
+  const reflectionKey = u.id + '-' + sc.label;
+  const existingReflection = reflectionsMap[reflectionKey] || '';
+  const reflectionHtml = `
+    <div class="giu-reflection">
+      <div class="giu-reflection-label">📝 My reflection</div>
+      <textarea id="ref-${u.id}-${sc.label}" placeholder="Write your own thoughts here... What did you find confusing? How will you remember this? Any examples from your own life?"
+        oninput="onReflectionInput(${u.id}, '${sc.label}', this.value)"
+      >${escHtml(existingReflection)}</textarea>
+      <div class="giu-reflection-save">
+        <button class="giu-save-btn" onclick="saveGiuReflection(${u.id}, '${sc.label}', document.getElementById('ref-${u.id}-${sc.label}').value)">Save reflection</button>
+        <span class="giu-save-status" id="ref-status-${u.id}-${sc.label}">Saved ✓</span>
+      </div>
+    </div>`;
   const cardHtml = `
     <div class="giu-sc-card ${cls}">
       <div class="giu-sc-header">
         <div class="giu-sc-badge ${cls}">${sc.label}</div>
         <div class="giu-sc-rule">${sc.rule}</div>
       </div>
+      ${insightHtml}
       <div class="giu-sc-body">${sc.body.map(b => renderGiuBlock(b)).join('')}</div>
+      ${reflectionHtml}
       <div class="giu-sc-footer">
         <button class="giu-comfortable-btn ${isComfortable ? 'on' : ''}"
           onclick="toggleGiuComfortable('${key}')">
@@ -1459,6 +1524,12 @@ function goToScenario(idx) {
   if (!u || idx < 0 || idx >= u.scenarios.length) return;
   currentScenarioIndex = idx;
   renderGiuLearn();
+}
+
+function onReflectionInput(unitId, label, text) {
+  reflectionsMap[unitId + '-' + label] = text;
+  clearTimeout(reflectionDebounce);
+  reflectionDebounce = setTimeout(() => saveGiuReflection(unitId, label, text), 2000);
 }
 
 function toggleGiuComfortable(key) {
