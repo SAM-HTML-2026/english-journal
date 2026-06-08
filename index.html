@@ -243,71 +243,103 @@
   .giu-screen.active { display: block; }
   .giu-back { background: none; border: none; color: var(--text-muted); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 6px; padding: 0; margin-bottom: 1.5rem; transition: color 0.15s; }
   .giu-back:hover { color: var(--text); }
-  .giu-unit-header { margin-bottom: 2rem; }
+  .giu-unit-header { margin-bottom: 1.5rem; }
   .giu-unit-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--tag-grammar-bg); color: var(--tag-grammar-text); font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px; margin-bottom: 10px; }
-  .giu-unit-title { font-family: 'Lora', serif; font-size: 24px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 4px; }
-  .giu-tabs { display: flex; gap: 4px; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 0; }
+  .giu-unit-title { font-family: 'Lora', serif; font-size: 22px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 4px; }
+  /* OVERALL PROGRESS BAR */
+  .giu-overall-progress { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.5rem; }
+  .giu-op-label { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+  .giu-op-bar { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .giu-op-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s; }
+  .giu-op-pct { font-size: 12px; font-weight: 500; color: var(--accent); white-space: nowrap; }
+  /* TABS */
+  .giu-tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
   .giu-tab { padding: 8px 18px; border: none; background: none; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
   .giu-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
   .giu-panel { display: none; }
   .giu-panel.active { display: block; }
-  /* SCENARIO SECTIONS */
-  .giu-scenario { margin-bottom: 2rem; }
-  .giu-scenario-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .giu-scenario-badge { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
-  .giu-sc-a { background: #e8f4fd; color: #0d3a5a; }
-  .giu-sc-b { background: #fdf3e7; color: #6a3a00; }
-  .giu-sc-c { background: #f3eefb; color: #4a1a6a; }
-  .giu-sc-d { background: #eafaf1; color: #0a4a20; }
-  .giu-scenario-rule { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.5; }
-  .giu-scenario-body { font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-top: 8px; }
-  .giu-scenario-body strong { color: var(--text); font-weight: 600; }
-  .giu-scenario-body em { color: var(--text-hint); font-style: italic; }
-  .giu-scenario-body .not { color: #a32d2d; font-style: italic; }
-  .giu-conj-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
-  .giu-conj-table th { background: var(--accent-light); color: var(--accent); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; padding: 7px 12px; text-align: left; }
-  .giu-conj-table td { padding: 7px 12px; border-top: 1px solid var(--border); color: var(--text-muted); }
+  /* SCENARIO PILL NAV */
+  .giu-sc-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .giu-sc-pill { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1.5px solid transparent; transition: all 0.15s; }
+  .giu-sc-pill.a { background: #e8f4fd; color: #0d3a5a; border-color: #b5d4f4; }
+  .giu-sc-pill.b { background: #fdf3e7; color: #6a3a00; border-color: #fac775; }
+  .giu-sc-pill.c { background: #f3eefb; color: #4a1a6a; border-color: #afa9ec; }
+  .giu-sc-pill.d { background: #eafaf1; color: #0a4a20; border-color: #9fe1cb; }
+  .giu-sc-pill.e { background: #fdeaea; color: #5a1a1a; border-color: #f09595; }
+  .giu-sc-pill.active { border-width: 2px; box-shadow: 0 0 0 1px currentColor; }
+  .giu-sc-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.35; }
+  .giu-sc-pill.done .giu-sc-dot { opacity: 1; }
+  /* SCENARIO CARD */
+  .giu-sc-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
+  .giu-sc-card.a { border-left: 4px solid #b5d4f4; }
+  .giu-sc-card.b { border-left: 4px solid #fac775; }
+  .giu-sc-card.c { border-left: 4px solid #afa9ec; }
+  .giu-sc-card.d { border-left: 4px solid #9fe1cb; }
+  .giu-sc-card.e { border-left: 4px solid #f09595; }
+  .giu-sc-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+  .giu-sc-badge { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+  .giu-sc-badge.a { background: #e8f4fd; color: #0d3a5a; }
+  .giu-sc-badge.b { background: #fdf3e7; color: #6a3a00; }
+  .giu-sc-badge.c { background: #f3eefb; color: #4a1a6a; }
+  .giu-sc-badge.d { background: #eafaf1; color: #0a4a20; }
+  .giu-sc-badge.e { background: #fdeaea; color: #5a1a1a; }
+  .giu-sc-rule { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.5; }
+  .giu-sc-body { font-size: 14px; color: var(--text-muted); line-height: 1.8; }
+  .giu-sc-body strong { color: var(--text); font-weight: 600; }
+  .giu-sc-body em { font-style: italic; }
+  .giu-sc-body .not { color: #a32d2d; font-style: italic; }
+  .giu-sc-body p { margin-bottom: 8px; }
+  .giu-sc-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .giu-comfortable-btn { display: flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border-strong); background: transparent; font-size: 12px; font-family: 'DM Sans', sans-serif; cursor: pointer; color: var(--text-muted); transition: all 0.15s; }
+  .giu-comfortable-btn.on { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .giu-sc-arrows { display: flex; gap: 6px; }
+  .giu-sc-arrow { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border-strong); background: transparent; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+  .giu-sc-arrow:hover { background: var(--bg); color: var(--text); }
+  .giu-sc-arrow:disabled { opacity: 0.3; cursor: default; }
+  /* TABLES + BLOCKS */
+  .giu-conj-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .giu-conj-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); color: var(--text-muted); }
+  .giu-conj-table tr:last-child td { border-bottom: none; }
+  .giu-conj-table td:first-child { color: var(--text-hint); width: 140px; }
   .giu-conj-table td strong { color: var(--text); }
   .giu-word-cluster { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; padding: 12px 14px; background: var(--accent-light); border-radius: var(--radius); }
   .giu-word-pill { padding: 4px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); font-size: 13px; font-weight: 500; color: var(--text); }
-  .giu-example-block { font-family: 'Lora', serif; font-style: italic; font-size: 14px; color: var(--text); background: var(--accent-light); border-left: 3px solid var(--accent); padding: 8px 14px; border-radius: 0 6px 6px 0; margin: 8px 0; }
-  .giu-speech-bubble { background: #f0f8e8; border: 1px solid #b8d89a; border-radius: 12px; padding: 12px 16px; margin: 10px 0; font-size: 14px; color: #2a5a0a; font-style: italic; position: relative; }
+  .giu-example-block { font-family: 'Lora', serif; font-style: italic; font-size: 14px; color: var(--text); background: var(--accent-light); border-left: 3px solid var(--accent); padding: 8px 14px; margin: 8px 0; border-radius: 0; }
+  .giu-speech-bubble { background: #f0f8e8; border: 1px solid #b8d89a; border-radius: 12px; padding: 12px 16px; margin: 10px 0; font-size: 14px; color: #2a5a0a; font-style: italic; }
   /* EXERCISES */
-  .giu-exercise { margin-bottom: 2.5rem; }
-  .giu-ex-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .giu-ex-badge { background: var(--tag-grammar-bg); color: var(--tag-grammar-text); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 8px; }
+  .giu-exercise { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .giu-ex-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
+  .giu-ex-badge { background: var(--tag-grammar-bg); color: var(--tag-grammar-text); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 8px; flex-shrink: 0; }
   .giu-ex-title { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.5; }
-  .giu-ex-instruction { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; font-style: italic; }
+  .giu-ex-example { background: var(--bg); border-left: 3px solid var(--accent); padding: 8px 12px; font-size: 13px; color: var(--text-muted); margin-bottom: 14px; border-radius: 0; }
+  .giu-ex-example u { color: var(--accent); text-decoration-color: var(--accent); }
   /* FILL BLANK */
-  .giu-fill-item { display: flex; align-items: baseline; gap: 6px; margin-bottom: 12px; font-size: 14px; color: var(--text); line-height: 1.6; flex-wrap: wrap; }
+  .giu-fill-item { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; font-size: 14px; color: var(--text); line-height: 1.7; flex-wrap: wrap; }
   .giu-item-num { color: var(--text-hint); font-size: 12px; min-width: 18px; flex-shrink: 0; }
-  .giu-blank { border: none; border-bottom: 2px solid var(--border); background: transparent; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 2px 6px; outline: none; min-width: 120px; transition: border-color 0.15s; }
+  .giu-blank { border: none; border-bottom: 2px solid var(--border); background: transparent; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 2px 8px; outline: none; min-width: 130px; transition: border-color 0.15s; }
   .giu-blank:focus { border-bottom-color: var(--accent); }
   .giu-blank.correct { border-bottom-color: var(--accent); background: var(--accent-light); border-radius: 4px 4px 0 0; }
   .giu-blank.wrong { border-bottom-color: #c0392b; background: #fdeaea; border-radius: 4px 4px 0 0; }
   .giu-hint { font-size: 12px; color: var(--text-hint); font-style: italic; }
   .giu-answer-reveal { font-size: 12px; color: #c0392b; font-weight: 500; margin-left: 4px; display: none; }
   .giu-answer-reveal.show { display: inline; }
-  /* MATCH */
-  .giu-match-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; margin-bottom: 12px; }
-  .giu-match-left { font-size: 13px; color: var(--text); }
+  /* MATCH (kept as is) */
   .giu-match-input { border: none; border-bottom: 2px solid var(--border); background: transparent; width: 40px; text-align: center; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); outline: none; }
   .giu-match-input.correct { border-bottom-color: var(--accent); }
   .giu-match-input.wrong { border-bottom-color: #c0392b; }
-  /* CHECK BUTTON + PROGRESS */
-  .giu-check-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
-  .giu-check-btn { padding: 8px 20px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+  /* CHECK ROW */
+  .giu-check-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .giu-check-btn { padding: 7px 18px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
   .giu-check-btn:hover { background: var(--accent-hover); }
-  .giu-reset-btn { padding: 8px 16px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-strong); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .giu-reset-btn { padding: 7px 14px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-strong); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.15s; }
   .giu-reset-btn:hover { border-color: #c0392b; color: #c0392b; }
-  .giu-score { font-size: 13px; color: var(--text-muted); }
-  .giu-score span { color: var(--accent); font-weight: 500; }
+  .giu-score { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500; background: var(--accent-light); color: var(--accent); }
   /* UNIT LIST */
   .giu-unit-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
   .giu-unit-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; cursor: pointer; transition: all 0.15s; }
-  .giu-unit-card:hover { border-color: var(--accent); box-shadow: var(--shadow); }
-  .giu-unit-card-num { font-size: 11px; color: var(--text-hint); margin-bottom: 6px; }
-  .giu-unit-card-title { font-family: 'Lora', serif; font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 10px; }
+  .giu-unit-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .giu-unit-card-num { font-size: 11px; color: var(--text-hint); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .giu-unit-card-title { font-family: 'Lora', serif; font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 12px; line-height: 1.4; }
   .giu-unit-progress { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
   .giu-unit-progress-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
 </style>
@@ -1310,7 +1342,8 @@ const GIU_UNITS = [
 ];
 
 let currentGiuUnit = null;
-let giuMode = 'list'; // 'list' or 'detail'
+let currentScenarioIndex = 0;
+let comfortableMap = {}; // scenarioKey -> bool
 
 function showGIU() {
   document.getElementById('appScreen').style.display = 'none';
@@ -1328,13 +1361,18 @@ function renderGiuList() {
   document.getElementById('giuDetailView').style.display = 'none';
   const list = document.getElementById('giuUnitList');
   list.innerHTML = GIU_UNITS.map(u => {
-    const totalEx = u.exercises.reduce((sum, ex) => sum + (ex.items ? ex.items.length : ex.left ? ex.left.length : 0), 0);
+    const done = u.scenarios.filter(sc => comfortableMap[u.id + '-' + sc.label]).length;
+    const total = u.scenarios.length;
+    const pct = total ? Math.round(done / total * 100) : 0;
     return `
     <div class="giu-unit-card" onclick="openGiuUnit(${u.id})">
       <div class="giu-unit-card-num">Unit ${u.id}</div>
       <div class="giu-unit-card-title">${u.title}</div>
-      <div style="font-size:12px; color:var(--text-hint); margin-bottom:8px;">${u.scenarios.length} scenarios · ${u.exercises.length} exercises</div>
-      <div class="giu-unit-progress"><div class="giu-unit-progress-bar" style="width:0%"></div></div>
+      <div style="font-size:12px; color:var(--text-hint); margin-bottom:10px;">${u.scenarios.length} scenarios · ${u.exercises.length} exercises</div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="giu-unit-progress" style="flex:1;"><div class="giu-unit-progress-bar" style="width:${pct}%"></div></div>
+        <span style="font-size:11px; color:var(--text-hint);">${pct}%</span>
+      </div>
     </div>`;
   }).join('');
 }
@@ -1342,13 +1380,13 @@ function renderGiuList() {
 function openGiuUnit(id) {
   currentGiuUnit = GIU_UNITS.find(u => u.id === id);
   if (!currentGiuUnit) return;
+  currentScenarioIndex = 0;
   document.getElementById('giuListView').style.display = 'none';
   document.getElementById('giuDetailView').style.display = 'block';
   document.getElementById('giuUnitBadge').textContent = 'Unit ' + currentGiuUnit.id;
   document.getElementById('giuUnitTitle').textContent = currentGiuUnit.title;
   renderGiuLearn();
   renderGiuExercises();
-  // Reset to learn tab
   document.querySelectorAll('.giu-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.giu-panel').forEach(p => p.classList.remove('active'));
   document.querySelector('.giu-tab').classList.add('active');
@@ -1362,32 +1400,81 @@ function switchGiuTab(tab, btn) {
   document.getElementById(tab === 'learn' ? 'giuLearnPanel' : 'giuExercisePanel').classList.add('active');
 }
 
+const SC_PILL_CLASSES = ['a','b','c','d','e','f','g','h'];
+
 function renderGiuLearn() {
   const u = currentGiuUnit;
-  const scColours = ['giu-sc-a','giu-sc-b','giu-sc-c','giu-sc-d'];
-  const html = u.scenarios.map((sc, i) => `
-    <div class="giu-scenario">
-      <div class="giu-scenario-header">
-        <div class="giu-scenario-badge ${scColours[i] || 'giu-sc-a'}">${sc.label}</div>
-        <div class="giu-scenario-rule">${sc.rule}</div>
+  const i = currentScenarioIndex;
+  const sc = u.scenarios[i];
+  const key = u.id + '-' + sc.label;
+  const isComfortable = !!comfortableMap[key];
+
+  // Overall progress bar
+  const done = u.scenarios.filter(s => comfortableMap[u.id + '-' + s.label]).length;
+  const pct = Math.round(done / u.scenarios.length * 100);
+  const progressHtml = `
+    <div class="giu-overall-progress">
+      <span class="giu-op-label">Learning progress</span>
+      <div class="giu-op-bar"><div class="giu-op-fill" style="width:${pct}%"></div></div>
+      <span class="giu-op-pct">${pct}%</span>
+    </div>`;
+
+  // Pill nav
+  const pills = u.scenarios.map((s, idx) => {
+    const k = u.id + '-' + s.label;
+    const cls = SC_PILL_CLASSES[idx] || 'a';
+    const isDone = !!comfortableMap[k];
+    return `<div class="giu-sc-pill ${cls} ${idx === i ? 'active' : ''} ${isDone ? 'done' : ''}"
+      onclick="goToScenario(${idx})">
+      <div class="giu-sc-dot"></div>${s.label}
+    </div>`;
+  }).join('');
+
+  const cls = SC_PILL_CLASSES[i] || 'a';
+  const cardHtml = `
+    <div class="giu-sc-card ${cls}">
+      <div class="giu-sc-header">
+        <div class="giu-sc-badge ${cls}">${sc.label}</div>
+        <div class="giu-sc-rule">${sc.rule}</div>
       </div>
-      <div class="giu-scenario-body">
-        ${sc.body.map(b => renderGiuBlock(b)).join('')}
+      <div class="giu-sc-body">${sc.body.map(b => renderGiuBlock(b)).join('')}</div>
+      <div class="giu-sc-footer">
+        <button class="giu-comfortable-btn ${isComfortable ? 'on' : ''}"
+          onclick="toggleGiuComfortable('${key}')">
+          ${isComfortable ? '✓ Comfortable' : '○ Mark comfortable'}
+        </button>
+        <div class="giu-sc-arrows">
+          <button class="giu-sc-arrow" onclick="goToScenario(${i - 1})" ${i === 0 ? 'disabled' : ''}>←</button>
+          <button class="giu-sc-arrow" onclick="goToScenario(${i + 1})" ${i === u.scenarios.length - 1 ? 'disabled' : ''}>→</button>
+        </div>
       </div>
-    </div>
-    ${i < u.scenarios.length - 1 ? '<hr style="border:none;border-top:1px solid var(--border);margin:1.5rem 0;">' : ''}
-  `).join('');
-  document.getElementById('giuLearnPanel').innerHTML = html;
+    </div>`;
+
+  document.getElementById('giuLearnPanel').innerHTML = progressHtml +
+    `<div class="giu-sc-nav">${pills}</div>` + cardHtml;
+}
+
+function goToScenario(idx) {
+  const u = currentGiuUnit;
+  if (!u || idx < 0 || idx >= u.scenarios.length) return;
+  currentScenarioIndex = idx;
+  renderGiuLearn();
+}
+
+function toggleGiuComfortable(key) {
+  comfortableMap[key] = !comfortableMap[key];
+  renderGiuLearn();
+  renderGiuList(); // update unit card progress
 }
 
 function renderGiuBlock(b) {
-  if (b.type === 'text') return `<p style="margin-bottom:8px;">${b.content}</p>`;
+  if (b.type === 'text') return `<p>${b.content}</p>`;
   if (b.type === 'example') return `<div class="giu-example-block">${b.content}</div>`;
   if (b.type === 'bubble') return `<div class="giu-speech-bubble">"${b.content}"</div>`;
   if (b.type === 'cluster') return `<div class="giu-word-cluster">${b.words.map(w => `<span class="giu-word-pill">${w}</span>`).join('')}</div>`;
   if (b.type === 'table') return `
     <table class="giu-conj-table">
-      ${b.rows.map(r => `<tr>${r.map((c,i) => i===2 ? `<td><strong>${c}</strong></td>` : `<td>${c}</td>`).join('')}</tr>`).join('')}
+      ${b.rows.map(r => `<tr>${r.map((c,ci) => ci===2 ? `<td><strong>${c}</strong></td>` : `<td>${c}</td>`).join('')}</tr>`).join('')}
     </table>`;
   return '';
 }
@@ -1401,7 +1488,7 @@ function renderGiuExercises() {
 function renderGiuExercise(ex) {
   // Example row — shown as read-only, greyed out
   const exampleHtml = ex.example ? `
-    <div style="margin-bottom:14px; padding:8px 12px; background:var(--bg); border-radius:var(--radius); border-left:3px solid var(--accent); font-size:13px; color:var(--text-muted);">
+    <div class="giu-ex-example">
       <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-hint); margin-right:6px;">Example:</span>
       ${ex.example.text}
     </div>` : '';
@@ -1445,7 +1532,8 @@ function renderGiuExercise(ex) {
       <button class="giu-reset-btn" onclick="resetExercise('${ex.id}')">↺ Reset</button>
       <span class="giu-score" id="score-${ex.id}"></span>
     </div>
-  </div>`;
+  </div>
+  `;
 }
 
 function checkExercise(exId) {
