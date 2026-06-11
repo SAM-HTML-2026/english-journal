@@ -45,8 +45,8 @@
       --tag-other-bg: #2a1a10; --tag-other-text: #d09070;
     }
   }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
-  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; padding-top: env(safe-area-inset-top, 0px); display: flex; align-items: center; justify-content: space-between; min-height: 56px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 6px; }
   .nav-logo { font-family: 'Lora', serif; font-size: 18px; font-weight: 500; color: var(--text); letter-spacing: -0.02em; }
   .nav-logo span { color: var(--accent); }
   .nav-actions { display: flex; gap: 8px; }
@@ -1912,13 +1912,13 @@ document.getElementById('giuBackBtn').addEventListener('click', () => {
   location.hash = 'giu';
 });
 document.getElementById('readerBackBtn').addEventListener('click', () => {
-  // If reading a story, go back to story list; if on story list, go back to book info
-  const authorText = document.getElementById('readerAuthor').textContent;
-  if (authorText.includes('Select a story') || !readerChunks.length) {
+  if (currentStoryIndex >= 0) {
+    // Reading a story → go back to story list
+    openBook();
+  } else {
+    // On story list → go back to book info page
     document.getElementById('readerView').classList.remove('active');
     document.getElementById('readListView').style.display = 'block';
-  } else {
-    openBook(); // back to story list
   }
 });
 // Override journal nav logo to go back
@@ -1969,7 +1969,7 @@ const SHERLOCK_ID = 'sherlock';
 let readerFontSize = 17;
 let readerChunks = [];
 let readerChunkIndex = 0;
-let currentStoryIndex = 0;
+let currentStoryIndex = -1; // -1 = on story list, >= 0 = reading a story
 let storyCache = {};
 const CHUNK_WORDS = 500;
 
@@ -1980,11 +1980,14 @@ function loadBooks() {
 
 // Show story selector
 function openBook() {
+  currentStoryIndex = -1;
+  readerChunks = [];
   document.getElementById('readListView').style.display = 'none';
   document.getElementById('readerView').classList.add('active');
   // Show story list first
   document.getElementById('readerTitle').textContent = 'The Adventures of Sherlock Holmes';
   document.getElementById('readerAuthor').textContent = 'by Arthur Conan Doyle · Select a story';
+  document.getElementById('readerBackBtn').textContent = '← Book info';
   document.getElementById('readerChapterLabel').textContent = '';
   document.getElementById('readerContent').innerHTML = SHERLOCK_STORIES.map((s, i) => `
     <div onclick="loadStory(${i})" style="padding:12px 14px; border:1px solid var(--border); border-radius:var(--radius); margin-bottom:8px; cursor:pointer; transition:all 0.15s; background:var(--surface);"
@@ -1997,12 +2000,14 @@ function openBook() {
 
 async function loadStory(storyIdx) {
   currentStoryIndex = storyIdx;
+  readerChunkIndex = 0;
   const story = SHERLOCK_STORIES[storyIdx];
   const cacheKey = SHERLOCK_ID + '-' + storyIdx;
   readerChunkIndex = parseInt(localStorage.getItem('read-pos-' + cacheKey) || '0');
 
   document.getElementById('readerTitle').textContent = story.title;
   document.getElementById('readerAuthor').textContent = 'The Adventures of Sherlock Holmes · Arthur Conan Doyle';
+  document.getElementById('readerBackBtn').textContent = '← All stories';
   document.getElementById('readerContent').innerHTML = '<div class="loading"><div class="spinner"></div>Loading story…</div>';
 
   // Use cache if available
