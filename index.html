@@ -1,0 +1,2313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>My English Journal</title>
+<meta name="description" content="My personal English learning journal — vocabulary, grammar and Grammar in Use.">
+<meta name="theme-color" content="#2d6a4f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="English Journal">
+<link rel="manifest" href="manifest.json">
+<!-- Apple touch icons (inline SVG fallback handled below) -->
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #fafaf8; --surface: #ffffff; --border: #e8e6e0; --border-strong: #d0cdc5;
+    --text: #1a1916; --text-muted: #6b6860; --text-hint: #a09d97;
+    --accent: #2d6a4f; --accent-light: #eaf4ef; --accent-hover: #235c43;
+    --dict-bg: #f5f8ff; --dict-border: #c8d8f0; --dict-text: #1a3a6a; --dict-muted: #4a6a9a;
+    --grammar-bg: #f8f4ff; --grammar-border: #d0b8f0; --grammar-text: #3a1a6a;
+    --comfortable: #2d6a4f; --not-yet: #a09d97;
+    --tag-grammar-bg: #eef3fb; --tag-grammar-text: #1a4a8a;
+    --tag-vocab-bg: #fdf3e7; --tag-vocab-text: #8a4a00;
+    --tag-phrase-bg: #f3eefb; --tag-phrase-text: #5a1a8a;
+    --tag-note-bg: #f0f5f0; --tag-note-text: #2a5a2a;
+    --tag-other-bg: #f5f0ee; --tag-other-text: #6a3a2a;
+    --radius: 10px; --shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16161a; --surface: #1e1e24; --border: #2e2e36; --border-strong: #3e3e4a;
+      --text: #e8e6e0; --text-muted: #9a9890; --text-hint: #5a5a64;
+      --accent: #4ade80; --accent-light: #0d2b1a; --accent-hover: #6ef09a;
+      --dict-bg: #0d1a2e; --dict-border: #1e3a5a; --dict-text: #90b8e8; --dict-muted: #6090c0;
+      --grammar-bg: #1a0d2e; --grammar-border: #3a1a5a; --grammar-text: #b090e8;
+      --tag-grammar-bg: #1a2a4a; --tag-grammar-text: #7ab0f0;
+      --tag-vocab-bg: #2a1a0a; --tag-vocab-text: #f0b060;
+      --tag-phrase-bg: #2a1a3a; --tag-phrase-text: #c080f0;
+      --tag-note-bg: #0a1a0a; --tag-note-text: #70c070;
+      --tag-other-bg: #2a1a10; --tag-other-text: #d09070;
+    }
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { font-family: 'Lora', serif; font-size: 18px; font-weight: 500; color: var(--text); letter-spacing: -0.02em; }
+  .nav-logo span { color: var(--accent); }
+  .nav-actions { display: flex; gap: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius); border: 1px solid var(--border-strong); background: transparent; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+  .btn:hover { background: var(--bg); }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .btn-lookup { background: var(--dict-bg); border: 1px solid var(--dict-border); color: var(--dict-text); font-size: 12px; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: opacity 0.15s; white-space: nowrap; }
+  .btn-lookup:hover { opacity: 0.8; }
+  .btn-lookup:disabled { opacity: 0.5; cursor: not-allowed; }
+  main { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .page-header { margin-bottom: 2rem; display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .page-header h1 { font-family: 'Lora', serif; font-size: 26px; font-weight: 500; letter-spacing: -0.02em; }
+  .page-header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.75rem; }
+  .filter-btn { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 13px; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.15s; }
+  .filter-btn:hover { border-color: var(--border-strong); color: var(--text); }
+  .filter-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .search-wrap { position: relative; margin-bottom: 1.5rem; }
+  .search-wrap input { width: 100%; padding: 10px 16px 10px 40px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.15s; }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap input::placeholder { color: var(--text-hint); }
+  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-hint); font-size: 15px; pointer-events: none; }
+  .entries { display: flex; flex-direction: column; }
+  .entry-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 10px; transition: box-shadow 0.15s, border-color 0.15s; }
+  .entry-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow); }
+  .entry-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 10px; }
+  .entry-title { font-family: 'Lora', serif; font-size: 17px; font-weight: 500; color: var(--text); letter-spacing: -0.01em; }
+  .entry-meta { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .tag { padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; letter-spacing: 0.02em; text-transform: uppercase; }
+  .tag-grammar { background: var(--tag-grammar-bg); color: var(--tag-grammar-text); }
+  .tag-vocabulary { background: var(--tag-vocab-bg); color: var(--tag-vocab-text); }
+  .tag-phrase { background: var(--tag-phrase-bg); color: var(--tag-phrase-text); }
+  .tag-note { background: var(--tag-note-bg); color: var(--tag-note-text); }
+  .tag-other { background: var(--tag-other-bg); color: var(--tag-other-text); }
+  .entry-date { font-size: 11px; color: var(--text-hint); }
+  .entry-body { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-bottom: 10px; }
+  .entry-example { font-family: 'Lora', serif; font-style: italic; font-size: 14px; color: var(--text); background: var(--accent-light); border-left: 2px solid var(--accent); padding: 8px 12px; border-radius: 0 6px 6px 0; margin-top: 8px; }
+  /* DICT */
+  .dict-syllables { font-size: 15px; font-weight: 500; color: var(--dict-text); letter-spacing: 0.06em; margin-bottom: 4px; }
+  .dict-syllables .stressed { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .dict-ipa { font-family: 'Lora', serif; font-style: italic; font-size: 13px; color: var(--dict-muted); margin-bottom: 8px; }
+  .dict-uk-usage { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--dict-border); }
+  .dict-uk-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dict-muted); margin-bottom: 6px; }
+  .dict-uk-text { font-size: 13px; color: var(--dict-text); line-height: 1.7; }
+  .uk-usage-edit { width: 100%; margin-top: 8px; padding: 8px 10px; border: 1px solid var(--dict-border); border-radius: 6px; background: var(--surface); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; resize: vertical; min-height: 80px; transition: border-color 0.15s; }
+  .uk-usage-edit:focus { border-color: var(--accent); }
+  .generating { font-size: 12px; color: var(--dict-muted); font-style: italic; margin-top:6px; }
+  .dict-section { margin-top: 14px; padding: 14px 16px; background: var(--dict-bg); border: 1px solid var(--dict-border); border-radius: var(--radius); }
+  .dict-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dict-muted); margin-bottom: 10px; }
+  .dict-pronunciation { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .dict-pron-text { font-family: 'Lora', serif; font-style: italic; font-size: 13px; color: var(--dict-muted); }
+  .play-btn { background: var(--dict-border); border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 10px; display: flex; align-items: center; justify-content: center; color: var(--dict-text); transition: opacity 0.15s; }
+  .play-btn:hover { opacity: 0.7; }
+  .dict-pos { font-size: 11px; color: var(--dict-muted); font-style: italic; margin-bottom: 6px; }
+  .dict-definition { font-size: 14px; color: var(--dict-text); line-height: 1.7; margin-bottom: 8px; }
+  .dict-example { font-family: 'Lora', serif; font-style: italic; font-size: 13px; color: var(--dict-muted); border-left: 2px solid var(--dict-border); padding-left: 10px; margin-top: 6px; }
+  /* GRAMMAR SCENARIO CARD COLOURS */
+  .sc-card-0 { background: #e8f4fd; color: #0d3a5a; }
+  .sc-card-1 { background: #fdf3e7; color: #6a3a00; }
+  .sc-card-2 { background: #f3eefb; color: #4a1a6a; }
+  .sc-card-3 { background: #fef9e7; color: #5a3a00; }
+  .sc-card-4 { background: #fde8f4; color: #5a0a3a; }
+  .sc-card-5 { background: #e8fdf5; color: #0a4a3a; }
+  .sc-card-6 { background: #fdeaea; color: #5a1a1a; }
+  .sc-card-7 { background: #eafaf1; color: #0a4a20; }
+  /* GRAMMAR SCENARIOS */
+  .scenario-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-top: 14px; }
+  .scenario-card {
+    border-radius: 12px; padding: 14px 14px 12px; cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    border: 2px solid transparent; position: relative;
+    min-height: 100px;
+  }
+  .scenario-card:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.12); }
+  .scenario-card.comfortable { border-color: #2d6a4f !important; }
+  .scenario-card.not-yet { opacity: 0.72; }
+  .scenario-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .scenario-card-lbl { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7; }
+  .scenario-card-dot {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid currentColor; opacity: 0.5;
+    display: flex; align-items: center; justify-content: center; font-size: 9px;
+    flex-shrink: 0; transition: all 0.2s;
+  }
+  .scenario-card.comfortable .scenario-card-dot { background: #2d6a4f; border-color: #2d6a4f; color: #fff; opacity: 1; }
+  .scenario-card-snippet { font-size: 12px; line-height: 1.5; opacity: 0.9; }
+  /* EXPANDED PANEL */
+  .scenario-expanded {
+    display: none; grid-column: 1 / -1;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  .scenario-expanded.open { display: block; }
+  .scenario-expanded-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .scenario-expanded-title { font-size: 14px; font-weight: 500; color: var(--text); }
+  .comfortable-toggle {
+    display: flex; align-items: center; gap: 6px; cursor: pointer;
+    font-size: 12px; color: var(--text-muted); background: none; border: none;
+    font-family: 'DM Sans', sans-serif; transition: color 0.15s; padding: 0;
+  }
+  .comfortable-toggle.on { color: var(--accent); }
+  .comfortable-toggle .toggle-dot {
+    width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border-strong);
+    display: flex; align-items: center; justify-content: center; font-size: 10px;
+    transition: all 0.15s;
+  }
+  .comfortable-toggle.on .toggle-dot { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .scenario-explanation { font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-bottom: 10px; }
+  .scenario-example { font-family: 'Lora', serif; font-style: italic; font-size: 13px; color: var(--text); background: var(--accent-light); border-left: 2px solid var(--accent); padding: 8px 12px; border-radius: 0 6px 6px 0; }
+  .scenario-progress { font-size: 12px; color: var(--text-muted); margin-top: 12px; text-align: right; }
+  .scenario-progress span { color: var(--accent); font-weight: 500; }
+  /* MODAL SCENARIOS */
+  .scenario-form-item { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; position: relative; }
+  .scenario-form-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .scenario-form-label { font-size: 13px; font-weight: 500; color: var(--grammar-text); }
+  .remove-scenario-btn { background: none; border: none; color: var(--text-hint); cursor: pointer; font-size: 16px; line-height: 1; padding: 0; transition: color 0.15s; }
+  .remove-scenario-btn:hover { color: #c0392b; }
+  .add-scenario-btn { width: 100%; padding: 8px; border: 1px dashed var(--border-strong); border-radius: var(--radius); background: transparent; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.15s; margin-top: 4px; }
+  .add-scenario-btn:hover { border-color: var(--accent); color: var(--accent); }
+  /* RICH EDITOR */
+  .rich-toolbar { display: flex; gap: 3px; flex-wrap: wrap; padding: 6px 8px; background: var(--bg); border: 1px solid var(--border); border-bottom: none; border-radius: var(--radius) var(--radius) 0 0; }
+  .rtool { padding: 4px 8px; border: 1px solid var(--border); border-radius: 5px; background: var(--surface); color: var(--text-muted); font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.12s; line-height: 1; }
+  .rtool:hover { background: var(--bg); color: var(--text); border-color: var(--border-strong); }
+  .rtool.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .rtool-sep { width: 1px; background: var(--border); margin: 2px 3px; }
+  .rtool-not { color: #a32d2d; font-weight: 500; }
+  .rich-editor { min-height: 90px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 0 0 var(--radius) var(--radius); background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.7; outline: none; }
+  .rich-editor:focus { border-color: var(--accent); }
+  .rich-editor mark { background: #fff3b0; color: inherit; border-radius: 2px; }
+  .rich-editor .not-form { color: #a32d2d; font-style: italic; }
+  .rich-editor u { text-underline-offset: 2px; }
+  /* SPECIAL BLOCKS */
+  .block-btns { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .block-btn { display: flex; align-items: center; gap: 5px; padding: 5px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: transparent; color: var(--text-muted); font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.12s; }
+  .block-btn:hover { border-color: var(--accent); color: var(--accent); }
+  /* CONJ TABLE in card */
+  .conj-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+  .conj-table th { background: var(--accent-light); color: var(--accent); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+  .conj-table td { padding: 6px 10px; border-bottom: 1px solid var(--border); color: var(--text-muted); }
+  .conj-table tr:last-child td { border-bottom: none; }
+  .conj-table td strong { color: var(--text); }
+  /* WORD CLUSTER in card */
+  .word-cluster { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; padding: 10px 12px; background: var(--accent-light); border-radius: var(--radius); }
+  .word-pill { padding: 3px 12px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); font-size: 13px; font-weight: 500; color: var(--text); }
+  /* EXAMPLE BLOCK in card */
+  .example-block { font-family: 'Lora', serif; font-style: italic; font-size: 13px; color: var(--text); background: var(--accent-light); border-left: 3px solid var(--accent); padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 8px 0; }
+  /* ACTIONS */
+  .entry-actions { display: flex; gap: 8px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .action-btn { background: none; border: none; color: var(--text-hint); font-size: 12px; cursor: pointer; padding: 2px 0; font-family: 'DM Sans', sans-serif; transition: color 0.15s; }
+  .action-btn:hover { color: var(--text); }
+  .action-btn.delete:hover { color: #c0392b; }
+  .empty-state { text-align: center; padding: 5rem 2rem; color: var(--text-muted); }
+  .empty-state .emoji { font-size: 40px; margin-bottom: 1rem; }
+  .empty-state h3 { font-family: 'Lora', serif; font-size: 20px; font-weight: 500; margin-bottom: 8px; color: var(--text); }
+  .empty-state p { font-size: 14px; max-width: 300px; margin: 0 auto; }
+  .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 2rem; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 500; color: var(--text); letter-spacing: -0.03em; }
+  .stat-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 200; align-items: center; justify-content: center; padding: 1.5rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 2rem; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
+  .modal h2 { font-family: 'Lora', serif; font-size: 20px; font-weight: 500; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+  .form-group { margin-bottom: 1.25rem; }
+  .form-group label { display: block; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 6px; }
+  .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.15s; resize: vertical; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
+  .form-group textarea { min-height: 70px; }
+  .form-row { display: flex; gap: 12px; }
+  .form-row .form-group { flex: 1; }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem; }
+  .lookup-row { display: flex; gap: 8px; align-items: flex-end; }
+  .lookup-row .form-group { flex: 1; margin-bottom: 0; }
+  .lookup-result { margin-top: 12px; padding: 12px 14px; background: var(--dict-bg); border: 1px solid var(--dict-border); border-radius: var(--radius); font-size: 13px; }
+  .lookup-result .lr-word { font-family: 'Lora', serif; font-size: 15px; font-weight: 500; color: var(--dict-text); margin-bottom: 4px; }
+  .lookup-result .lr-pos { font-size: 11px; color: var(--dict-muted); font-style: italic; margin-bottom: 6px; }
+  .lookup-result .lr-pron { font-family: 'Lora', serif; font-style: italic; font-size: 12px; color: var(--dict-muted); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .lookup-result .lr-def { color: var(--dict-text); line-height: 1.6; margin-bottom: 6px; }
+  .lookup-result .lr-ex { font-family: 'Lora', serif; font-style: italic; color: var(--dict-muted); border-left: 2px solid var(--dict-border); padding-left: 8px; }
+  .lookup-result .lr-use { font-size: 11px; color: var(--text-hint); margin-top: 8px; }
+  .lookup-error { color: #c0392b; font-size: 13px; margin-top: 8px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+  .section-label { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 10px; }
+  .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: var(--radius); font-size: 13px; font-weight: 500; opacity: 0; transform: translateY(8px); transition: opacity 0.2s, transform 0.2s; z-index: 300; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .loading { text-align: center; padding: 3rem; color: var(--text-hint); font-size: 14px; }
+  .spinner { width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 12px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 768px) {
+    /* NAV */
+    nav { padding: 0 1rem; height: auto; min-height: 56px; flex-wrap: wrap; gap: 6px; padding-top: 8px; padding-bottom: 8px; }
+    .nav-logo { font-size: 16px; }
+    .nav-actions { gap: 6px; flex-wrap: wrap; }
+    .btn { padding: 6px 10px; font-size: 12px; }
+    /* MAIN */
+    main { padding: 1.25rem 1rem 3rem; }
+    .page-header h1 { font-size: 22px; }
+    /* STATS */
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    /* ENTRY CARDS */
+    .entry-card { padding: 1rem; }
+    .entry-top { flex-direction: column; gap: 6px; }
+    .entry-meta { flex-direction: row; }
+    /* SCENARIO GRID */
+    .scenario-grid { grid-template-columns: repeat(2, 1fr); }
+    /* MODAL */
+    .modal { padding: 1.25rem; margin: 0.5rem; max-height: 95vh; border-radius: 12px; }
+    .modal-overlay { padding: 0.5rem; align-items: flex-end; }
+    .form-row { flex-direction: column; }
+    .lookup-row { flex-direction: column; }
+    /* DICT LOOKUP */
+    .btn-lookup { width: 100%; text-align: center; }
+    /* RICH EDITOR */
+    .block-btns { flex-direction: column; }
+    .block-btn { width: 100%; justify-content: center; }
+    /* GIU */
+    .giu-unit-list { grid-template-columns: 1fr; }
+    .giu-sc-nav { gap: 6px; }
+    .giu-sc-pill { padding: 5px 10px; font-size: 12px; }
+    .giu-sc-card { padding: 1rem; }
+    .giu-sc-header { flex-direction: column; gap: 8px; }
+    .giu-sc-footer { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .giu-sc-arrows { align-self: flex-end; }
+    .giu-tabs { overflow-x: auto; }
+    .giu-tab { padding: 8px 14px; font-size: 13px; white-space: nowrap; }
+    .giu-exercise { padding: 1rem; }
+    .giu-fill-item { flex-wrap: wrap; gap: 4px; }
+    .giu-blank { min-width: 100px; }
+    .giu-check-row { flex-wrap: wrap; gap: 8px; }
+    .giu-check-btn, .giu-reset-btn { flex: 1; text-align: center; }
+    /* FILTER BAR */
+    .filter-bar { gap: 6px; }
+    .filter-btn { padding: 4px 10px; font-size: 12px; }
+  }
+
+  @media (max-width: 480px) {
+    #settingsBtn { padding: 6px 8px; font-size: 0; }
+    #settingsBtn::before { content: '⚙'; font-size: 16px; }
+    #giuNavBtn { padding: 6px 8px; font-size: 11px; }
+    #readNavBtn { padding: 6px 8px; font-size: 11px; }
+    #newsNavBtn { padding: 6px 8px; font-size: 11px; }
+    #addEntryBtn { padding: 6px 8px; font-size: 11px; }
+    .nav-actions { gap: 5px; }
+    .scenario-grid { grid-template-columns: 1fr; }
+    .giu-sc-nav { gap: 4px; }
+    .giu-sc-pill { font-size: 11px; padding: 4px 8px; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  }
+
+  /* GRAMMAR IN USE */
+  .giu-screen { display: none; }
+  .giu-screen.active { display: block; }
+  .giu-back { background: none; border: none; color: var(--text-muted); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 6px; padding: 0; margin-bottom: 1.5rem; transition: color 0.15s; }
+  .giu-back:hover { color: var(--text); }
+  .giu-unit-header { margin-bottom: 1.5rem; }
+  .giu-unit-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--tag-grammar-bg); color: var(--tag-grammar-text); font-size: 12px; font-weight: 500; padding: 4px 12px; border-radius: 12px; margin-bottom: 10px; }
+  .giu-unit-title { font-family: 'Lora', serif; font-size: 22px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 4px; }
+  /* OVERALL PROGRESS BAR */
+  .giu-overall-progress { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.5rem; }
+  .giu-op-label { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+  .giu-op-bar { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .giu-op-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width 0.4s; }
+  .giu-op-pct { font-size: 12px; font-weight: 500; color: var(--accent); white-space: nowrap; }
+  /* TABS */
+  .giu-tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+  .giu-tab { padding: 8px 18px; border: none; background: none; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
+  .giu-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+  .giu-panel { display: none; }
+  .giu-panel.active { display: block; }
+  /* SCENARIO PILL NAV */
+  .giu-sc-nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .giu-sc-pill { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1.5px solid transparent; transition: all 0.15s; }
+  .giu-sc-pill.a { background: #e8f4fd; color: #0d3a5a; border-color: #b5d4f4; }
+  .giu-sc-pill.b { background: #fdf3e7; color: #6a3a00; border-color: #fac775; }
+  .giu-sc-pill.c { background: #f3eefb; color: #4a1a6a; border-color: #afa9ec; }
+  .giu-sc-pill.d { background: #eafaf1; color: #0a4a20; border-color: #9fe1cb; }
+  .giu-sc-pill.e { background: #fdeaea; color: #5a1a1a; border-color: #f09595; }
+  .giu-sc-pill.active { border-width: 2px; box-shadow: 0 0 0 1px currentColor; }
+  .giu-sc-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.35; }
+  .giu-sc-pill.done .giu-sc-dot { opacity: 1; }
+  /* SCENARIO CARD */
+  .giu-sc-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem; }
+  .giu-sc-card.a { border-left: 4px solid #b5d4f4; }
+  .giu-sc-card.b { border-left: 4px solid #fac775; }
+  .giu-sc-card.c { border-left: 4px solid #afa9ec; }
+  .giu-sc-card.d { border-left: 4px solid #9fe1cb; }
+  .giu-sc-card.e { border-left: 4px solid #f09595; }
+  .giu-sc-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+  .giu-sc-badge { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+  .giu-sc-badge.a { background: #e8f4fd; color: #0d3a5a; }
+  .giu-sc-badge.b { background: #fdf3e7; color: #6a3a00; }
+  .giu-sc-badge.c { background: #f3eefb; color: #4a1a6a; }
+  .giu-sc-badge.d { background: #eafaf1; color: #0a4a20; }
+  .giu-sc-badge.e { background: #fdeaea; color: #5a1a1a; }
+  .giu-sc-rule { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.5; }
+  .giu-sc-body { font-size: 14px; color: var(--text-muted); line-height: 1.8; }
+  .giu-sc-body strong { color: var(--text); font-weight: 600; }
+  .giu-sc-body em { font-style: italic; }
+  .giu-sc-body .not { color: #a32d2d; font-style: italic; }
+  .giu-sc-body p { margin-bottom: 8px; }
+  .giu-sc-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .giu-comfortable-btn { display: flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border-strong); background: transparent; font-size: 12px; font-family: 'DM Sans', sans-serif; cursor: pointer; color: var(--text-muted); transition: all 0.15s; }
+  .giu-comfortable-btn.on { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .giu-sc-arrows { display: flex; gap: 6px; }
+  .giu-sc-arrow { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border-strong); background: transparent; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+  .giu-sc-arrow:hover { background: var(--bg); color: var(--text); }
+  .giu-sc-arrow:disabled { opacity: 0.3; cursor: default; }
+  /* TABLES + BLOCKS */
+  .giu-conj-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .giu-conj-table td { padding: 7px 12px; border-bottom: 1px solid var(--border); color: var(--text-muted); }
+  .giu-conj-table tr:last-child td { border-bottom: none; }
+  .giu-conj-table td:first-child { color: var(--text-hint); width: 140px; }
+  .giu-conj-table td strong { color: var(--text); }
+  .giu-word-cluster { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; padding: 12px 14px; background: var(--accent-light); border-radius: var(--radius); }
+  .giu-word-pill { padding: 4px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); font-size: 13px; font-weight: 500; color: var(--text); }
+  .giu-example-block { font-family: 'Lora', serif; font-style: italic; font-size: 14px; color: var(--text); background: var(--accent-light); border-left: 3px solid var(--accent); padding: 8px 14px; margin: 8px 0; border-radius: 0; }
+  .giu-speech-bubble { background: #f0f8e8; border: 1px solid #b8d89a; border-radius: 12px; padding: 12px 16px; margin: 10px 0; font-size: 14px; color: #2a5a0a; font-style: italic; }
+  /* EXERCISES */
+  .giu-exercise { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+  .giu-ex-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px; }
+  .giu-ex-badge { background: var(--tag-grammar-bg); color: var(--tag-grammar-text); font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 8px; flex-shrink: 0; }
+  .giu-ex-title { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.5; }
+  .giu-ex-example { background: var(--bg); border-left: 3px solid var(--accent); padding: 8px 12px; font-size: 13px; color: var(--text-muted); margin-bottom: 14px; border-radius: 0; }
+  .giu-ex-example u { color: var(--accent); text-decoration-color: var(--accent); }
+  /* FILL BLANK */
+  .giu-fill-item { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; font-size: 14px; color: var(--text); line-height: 1.7; flex-wrap: wrap; }
+  .giu-item-num { color: var(--text-hint); font-size: 12px; min-width: 18px; flex-shrink: 0; }
+  .giu-blank { border: none; border-bottom: 2px solid var(--border); background: transparent; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 2px 8px; outline: none; min-width: 130px; transition: border-color 0.15s; }
+  .giu-blank:focus { border-bottom-color: var(--accent); }
+  .giu-blank.correct { border-bottom-color: var(--accent); background: var(--accent-light); border-radius: 4px 4px 0 0; }
+  .giu-blank.wrong { border-bottom-color: #c0392b; background: #fdeaea; border-radius: 4px 4px 0 0; }
+  .giu-hint { font-size: 12px; color: var(--text-hint); font-style: italic; }
+  .giu-answer-reveal { font-size: 12px; color: #c0392b; font-weight: 500; margin-left: 4px; display: none; }
+  .giu-answer-reveal.show { display: inline; }
+  /* MATCH (kept as is) */
+  .giu-match-input { border: none; border-bottom: 2px solid var(--border); background: transparent; width: 40px; text-align: center; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); outline: none; }
+  .giu-match-input.correct { border-bottom-color: var(--accent); }
+  .giu-match-input.wrong { border-bottom-color: #c0392b; }
+  /* CHECK ROW */
+  .giu-check-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+  .giu-check-btn { padding: 7px 18px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+  .giu-check-btn:hover { background: var(--accent-hover); }
+  .giu-reset-btn { padding: 7px 14px; background: transparent; color: var(--text-muted); border: 1px solid var(--border-strong); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; transition: all 0.15s; }
+  .giu-reset-btn:hover { border-color: #c0392b; color: #c0392b; }
+  .giu-score { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500; background: var(--accent-light); color: var(--accent); }
+  /* UNIT LIST */
+  .giu-unit-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .giu-unit-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; cursor: pointer; transition: all 0.15s; }
+  .giu-unit-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .giu-unit-card-num { font-size: 11px; color: var(--text-hint); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .giu-unit-card-title { font-family: 'Lora', serif; font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 12px; line-height: 1.4; }
+  .giu-unit-progress { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .giu-unit-progress-bar { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
+  /* KEY INSIGHT */
+  .giu-insight { background: #fdf8e8; border: 1px solid #f0d060; border-radius: var(--radius); padding: 12px 14px; margin-bottom: 16px; }
+  .giu-insight-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #8a6a00; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+  .giu-insight-text { font-size: 13px; color: #5a4400; line-height: 1.7; }
+  .giu-insight-text strong { color: #3a2a00; }
+  .giu-insight-text .not { color: #a32d2d; font-style: italic; }
+  /* REFLECTION */
+  .giu-reflection { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .giu-reflection-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-hint); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+  .giu-reflection textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; line-height: 1.6; resize: vertical; min-height: 80px; outline: none; transition: border-color 0.15s; }
+  .giu-reflection textarea:focus { border-color: var(--accent); }
+  .giu-reflection textarea::placeholder { color: var(--text-hint); }
+  .giu-reflection-save { margin-top: 8px; display: flex; align-items: center; gap: 8px; }
+  .giu-save-btn { padding: 5px 14px; background: transparent; border: 1px solid var(--border-strong); border-radius: var(--radius); color: var(--text-muted); font-size: 12px; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.15s; }
+  .giu-save-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .giu-save-status { font-size: 12px; color: var(--accent); display: none; }
+  .giu-save-status.show { display: inline; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">My English <span>Journal</span></div>
+  <div class="nav-actions">
+    <button class="btn" id="giuNavBtn" style="white-space:nowrap;">📖 Grammar in Use</button>
+    <button class="btn" id="readNavBtn" style="white-space:nowrap;">📚 Read</button>
+    <button class="btn" id="newsNavBtn" style="white-space:nowrap;">📰 News</button>
+    <button class="btn" id="settingsBtn">⚙ Settings</button>
+    <button class="btn btn-primary" id="addEntryBtn">+ Add Entry</button>
+  </div>
+</nav>
+
+<div id="appScreen" style="display:none;">
+  <main>
+    <div class="page-header">
+      <div><h1>All Entries</h1><p id="entryCount">Loading...</p></div>
+    </div>
+    <div class="stats-bar" id="statsBar"></div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search your notes…" />
+    </div>
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="grammar">Grammar</button>
+      <button class="filter-btn" data-filter="vocabulary">Vocabulary</button>
+      <button class="filter-btn" data-filter="phrase">Phrase</button>
+      <button class="filter-btn" data-filter="note">Note</button>
+      <button class="filter-btn" data-filter="other">Other</button>
+    </div>
+    <div class="entries" id="entriesList">
+      <div class="loading"><div class="spinner"></div>Loading your notes…</div>
+    </div>
+  </main>
+</div>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal-overlay" id="entryModal">
+  <div class="modal">
+    <h2 id="modalTitle">New Entry</h2>
+    <div class="form-row">
+      <div class="form-group" style="flex:2;">
+        <label>Title *</label>
+        <input type="text" id="entryTitle" placeholder="e.g. Present Continuous" />
+      </div>
+      <div class="form-group" style="flex:1;">
+        <label>Type</label>
+        <select id="entryType">
+          <option value="grammar">Grammar</option>
+          <option value="vocabulary">Vocabulary</option>
+          <option value="phrase">Phrase</option>
+          <option value="note">Note</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Source (optional)</label>
+      <input type="text" id="entrySource" placeholder="e.g. English Grammar in Use, Unit 1" />
+    </div>
+
+    <!-- GRAMMAR SCENARIOS AREA -->
+    <div id="grammarScenariosArea">
+      <hr class="divider">
+      <div class="section-label">📋 Scenarios</div>
+      <div id="scenariosList"></div>
+      <button class="add-scenario-btn" id="addScenarioBtn">+ Add Scenario</button>
+      <hr class="divider">
+    </div>
+
+    <!-- VOCAB AREA -->
+    <div id="dictLookupArea">
+      <hr class="divider">
+      <div class="section-label">📖 Dictionary Lookup</div>
+      <div class="lookup-row">
+        <div class="form-group">
+          <input type="text" id="lookupWord" placeholder="Type the word to look up…" />
+        </div>
+        <button class="btn-lookup" id="lookupBtn">Look up →</button>
+      </div>
+      <div id="lookupResult" style="display:none;"></div>
+      <hr class="divider">
+    </div>
+
+    <!-- GENERAL FIELDS (non-grammar) -->
+    <div id="generalFields">
+      <div class="form-group">
+        <label>My Notes</label>
+        <textarea id="entryBody" placeholder="Write what you learned…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>My Example Sentence</label>
+        <input type="text" id="entryExample" placeholder="e.g. She remained resilient despite the challenges." />
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn" id="cancelEntry">Cancel</button>
+      <button class="btn btn-primary" id="saveEntry">Save Entry</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <h2>Settings</h2>
+    <div class="form-group"><label>Supabase URL</label><input type="text" id="settingsUrl" /></div>
+    <div class="form-group"><label>Supabase Anon Key</label><input type="text" id="settingsKey" /></div>
+    <div class="modal-footer">
+      <button class="btn" id="cancelSettings">Cancel</button>
+      <button class="btn btn-primary" id="saveSettings">Save & Reconnect</button>
+    </div>
+  </div>
+</div>
+
+<!-- READ SCREEN -->
+<div class="read-screen" id="readScreen">
+  <main>
+    <!-- Book list view -->
+    <div id="readListView">
+      <div class="page-header">
+        <div><h1>Reading</h1><p>Classic English literature — free &amp; open access</p></div>
+      </div>
+      <div class="read-type-tabs">
+        <button class="read-type-btn active" onclick="setReadType('novels',this)">📖 Novels</button>
+        <button class="read-type-btn" onclick="setReadType('short',this)">📄 Short Stories</button>
+      </div>
+      <div class="book-grid" id="bookGrid">
+        <div class="loading"><div class="spinner"></div>Loading books…</div>
+      </div>
+    </div>
+    <!-- Reader view -->
+    <div class="reader-view" id="readerView">
+      <button class="read-back" id="readerBackBtn">← Back to books</button>
+      <div class="page-header">
+        <div>
+          <h1 id="readerTitle" style="font-size:22px;"></h1>
+          <p id="readerAuthor"></p>
+        </div>
+      </div>
+      <div class="reader-controls">
+        <span style="font-size:12px; color:var(--text-muted);">Font size:</span>
+        <button class="font-size-btn" onclick="changeFontSize(-1)">A−</button>
+        <button class="font-size-btn" onclick="changeFontSize(1)">A+</button>
+        <span style="font-size:12px; color:var(--text-hint); margin-left:auto;" id="readerWordCount"></span>
+      </div>
+      <div class="reader-content" id="readerContent"></div>
+      <div class="reader-progress" id="readerProgress"></div>
+    </div>
+  </main>
+</div>
+
+<!-- NEWS SCREEN -->
+<div class="news-screen" id="newsScreen">
+  <main>
+    <div class="page-header">
+      <div><h1>Sports News</h1><p>Latest from BBC Sport</p></div>
+    </div>
+    <div class="news-sport-tabs">
+      <button class="news-sport-tab active" onclick="switchNewsSport('football',this)">⚽ Football</button>
+      <button class="news-sport-tab" onclick="switchNewsSport('basketball',this)">🏀 Basketball</button>
+      <button class="news-sport-tab" onclick="switchNewsSport('tennis',this)">🎾 Tennis</button>
+    </div>
+    <div class="news-feed" id="newsFeed">
+      <div class="news-loading"><div class="spinner"></div>Loading news…</div>
+    </div>
+  </main>
+</div>
+
+<!-- QUICK SAVE POPUP -->
+<div class="quick-save-popup" id="quickSavePopup">
+  <div class="qs-header">
+    <span class="qs-title">💾 Save to Journal</span>
+    <button class="qs-close" onclick="closeQuickSave()">×</button>
+  </div>
+  <div class="qs-selected" id="qsSelected"></div>
+  <div class="qs-type-row">
+    <button class="qs-type-btn active" data-type="vocabulary" onclick="setQsType(this)">Vocabulary</button>
+    <button class="qs-type-btn" data-type="phrase" onclick="setQsType(this)">Phrase</button>
+    <button class="qs-type-btn" data-type="note" onclick="setQsType(this)">Note</button>
+  </div>
+  <textarea class="qs-note" id="qsNote" rows="2" placeholder="Add your own note (optional)…"></textarea>
+  <div class="qs-actions">
+    <button class="qs-cancel-btn" onclick="closeQuickSave()">Cancel</button>
+    <button class="qs-save-btn" onclick="quickSaveEntry()">Save to Journal</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- GRAMMAR IN USE SCREEN -->
+<div class="giu-screen" id="giuScreen">
+  <main>
+    <!-- UNIT LIST VIEW -->
+    <div id="giuListView">
+      <div class="page-header">
+        <div><h1>Grammar in Use</h1><p>English Grammar in Use — Raymond Murphy</p></div>
+      </div>
+      <div class="giu-unit-list" id="giuUnitList"></div>
+    </div>
+    <!-- UNIT DETAIL VIEW -->
+    <div id="giuDetailView" style="display:none;">
+      <button class="giu-back" id="giuBackBtn">← All units</button>
+      <div class="giu-unit-header">
+        <div class="giu-unit-badge" id="giuUnitBadge">Unit 1</div>
+        <div class="giu-unit-title" id="giuUnitTitle"></div>
+      </div>
+      <div class="giu-tabs">
+        <button class="giu-tab active" onclick="switchGiuTab('learn',this)">📘 Learning</button>
+        <button class="giu-tab" onclick="switchGiuTab('exercise',this)">✏ Exercises</button>
+      </div>
+      <div class="giu-panel active" id="giuLearnPanel"></div>
+      <div class="giu-panel" id="giuExercisePanel"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+const SUPA_URL = 'https://kmvhfwrhoemsjmpdvbku.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imttdmhmd3Job2Vtc2ptcGR2Ymt1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA5MDE0NzksImV4cCI6MjA5NjQ3NzQ3OX0.Fa2cYbT5vgVatRdMFLFGLoytIiasauW3PPKkKlay2Uo';
+
+let entries = [];
+let scenariosMap = {}; // entryId -> scenarios[]
+let currentFilter = 'all';
+let searchQuery = '';
+let editingId = null;
+let pendingDict = null;
+let modalScenarios = []; // scenarios being edited in modal
+let currentSpeakId = null;
+const LABELS = ['A','B','C','D','E','F','G','H'];
+
+// ── SUPABASE ──────────────────────────────────────────────
+async function supaFetch(path, options = {}) {
+  const res = await fetch(`${SUPA_URL}/rest/v1/${path}`, {
+    ...options,
+    headers: {
+      'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`,
+      'Content-Type': 'application/json', 'Prefer': 'return=representation',
+      ...(options.headers || {})
+    }
+  });
+  if (!res.ok) throw new Error(await res.text());
+  const text = await res.text();
+  return text ? JSON.parse(text) : [];
+}
+
+// ── INIT ──────────────────────────────────────────────────
+function init() {
+  const hash = location.hash.replace('#', '');
+  if (hash === 'giu') {
+    document.getElementById('appScreen').style.display = 'none';
+    document.getElementById('giuScreen').classList.add('active');
+    loadGiuReflections();
+    renderGiuList();
+  } else if (hash.startsWith('giu-unit-')) {
+    const parts = hash.split('-');
+    const unitId = parseInt(parts[2]);
+    const tab = parts[3] || 'learn';
+    document.getElementById('appScreen').style.display = 'none';
+    document.getElementById('giuScreen').classList.add('active');
+    loadGiuReflections().then(() => openGiuUnit(unitId, tab));
+  } else if (hash === 'read') {
+    document.getElementById('readScreen').classList.add('active');
+    loadBooks();
+  } else if (hash === 'news') {
+    document.getElementById('newsScreen').classList.add('active');
+    loadNews('football');
+  } else {
+    document.getElementById('appScreen').style.display = 'block';
+    loadEntries();
+  }
+}
+
+// ── LOAD ──────────────────────────────────────────────────
+async function loadEntries() {
+  document.getElementById('entriesList').innerHTML = '<div class="loading"><div class="spinner"></div>Loading your notes…</div>';
+  try {
+    entries = await supaFetch('entries?order=created_at.desc');
+    // Load all scenarios
+    const allScenarios = await supaFetch('grammar_scenarios?order=position.asc');
+    scenariosMap = {};
+    allScenarios.forEach(s => {
+      if (!scenariosMap[s.entry_id]) scenariosMap[s.entry_id] = [];
+      scenariosMap[s.entry_id].push(s);
+    });
+    renderAll();
+  } catch(e) {
+    document.getElementById('entriesList').innerHTML = `<div class="empty-state"><div class="emoji">⚠️</div><h3>Could not load entries</h3><p>${e.message}</p></div>`;
+  }
+}
+
+// ── RENDER ────────────────────────────────────────────────
+function renderAll() { renderStats(); renderEntries(); }
+
+function renderStats() {
+  const total = entries.length;
+  document.getElementById('entryCount').textContent = total === 0 ? 'No entries yet' : `${total} ${total === 1 ? 'entry' : 'entries'}`;
+  document.getElementById('statsBar').innerHTML = [
+    { label: 'Total', num: total },
+    { label: 'Grammar', num: entries.filter(e => e.type === 'grammar').length },
+    { label: 'Vocabulary', num: entries.filter(e => e.type === 'vocabulary').length },
+    { label: 'Phrases', num: entries.filter(e => e.type === 'phrase').length },
+  ].map(s => `<div class="stat-card"><div class="stat-num">${s.num}</div><div class="stat-label">${s.label}</div></div>`).join('');
+}
+
+function renderEntries() {
+  let list = entries;
+  if (currentFilter !== 'all') list = list.filter(e => e.type === currentFilter);
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(e =>
+      (e.title||'').toLowerCase().includes(q) ||
+      (e.body||'').toLowerCase().includes(q) ||
+      (e.example||'').toLowerCase().includes(q) ||
+      (e.dict_definition||'').toLowerCase().includes(q) ||
+      (scenariosMap[e.id]||[]).some(s =>
+        (s.explanation||'').toLowerCase().includes(q) ||
+        (s.example||'').toLowerCase().includes(q)
+      )
+    );
+  }
+  if (list.length === 0) {
+    document.getElementById('entriesList').innerHTML = `<div class="empty-state"><div class="emoji">📖</div><h3>${entries.length === 0 ? 'Start your journal' : 'No matches'}</h3><p>${entries.length === 0 ? 'Add your first entry with the button above.' : 'Try a different search or filter.'}</p></div>`;
+    return;
+  }
+  document.getElementById('entriesList').innerHTML = list.map(e => renderCard(e)).join('');
+}
+
+function renderCard(e) {
+  const scenarios = scenariosMap[e.id] || [];
+  const isGrammar = e.type === 'grammar';
+  const hasDict = e.type === 'vocabulary' && e.dict_definition;
+
+  const grammarSection = isGrammar && scenarios.length > 0 ? renderScenarioSummary(e.id, scenarios) : '';
+  const dictSection = hasDict ? renderDictSection(e) : '';
+  const bodySection = !isGrammar && e.body ? `<div class="entry-body">${escHtml(e.body)}</div>` : '';
+  const exSection = !isGrammar && e.example ? `<div class="entry-example">"${escHtml(e.example)}"</div>` : '';
+  const sourceSection = e.source ? `<div style="font-size:11px; color:var(--text-hint); margin-top:8px;">📚 ${escHtml(e.source)}</div>` : '';
+
+  return `
+  <div class="entry-card" id="card-${e.id}">
+    <div class="entry-top">
+      <div class="entry-title">${escHtml(e.title||'')}</div>
+      <div class="entry-meta">
+        <span class="tag tag-${e.type||'note'}">${e.type||'note'}</span>
+        <span class="entry-date">${formatDate(e.created_at)}</span>
+      </div>
+    </div>
+    ${bodySection}${exSection}${sourceSection}${grammarSection}${dictSection}
+    <div class="entry-actions">
+      <button class="action-btn" id="speak-${e.id}" onclick="speakEntry('${e.id}')">🔊 Speak</button>
+      <button class="action-btn" id="stop-${e.id}" onclick="stopSpeaking()" style="display:none; color:var(--accent);">■ Stop</button>
+      <button class="action-btn" onclick="editEntry('${e.id}')">✏ Edit</button>
+      <button class="action-btn delete" onclick="deleteEntry('${e.id}')">✕ Delete</button>
+    </div>
+  </div>`;
+}
+
+const SC_COLOURS = [
+  'sc-card-0','sc-card-1','sc-card-2','sc-card-3',
+  'sc-card-4','sc-card-5','sc-card-6','sc-card-7'
+];
+
+function renderScenarioSummary(entryId, scenarios) {
+  const comfortable = scenarios.filter(s => s.comfortable).length;
+  const total = scenarios.length;
+
+  const cards = scenarios.map((s, i) => {
+    const colour = SC_COLOURS[i % SC_COLOURS.length];
+    const snippet = (s.explanation || '').slice(0, 60) + ((s.explanation||'').length > 60 ? '…' : '');
+    return `
+    <div class="scenario-card ${colour} ${s.comfortable ? 'comfortable' : 'not-yet'}"
+         onclick="toggleScenarioExpand('${s.id}', '${entryId}')"
+         id="sc-card-${s.id}">
+      <div class="scenario-card-top">
+        <span class="scenario-card-lbl">Scenario ${escHtml(s.label)}</span>
+        <div class="scenario-card-dot">${s.comfortable ? '✓' : ''}</div>
+      </div>
+      <div class="scenario-card-snippet">${escHtml(snippet) || '<em style="opacity:0.5;">No explanation yet</em>'}</div>
+    </div>
+    <div class="scenario-expanded" id="sc-exp-${s.id}">
+      <div class="scenario-expanded-header">
+        <span class="scenario-expanded-title">Scenario ${escHtml(s.label)}</span>
+        <button class="comfortable-toggle ${s.comfortable ? 'on' : ''}"
+                onclick="event.stopPropagation(); toggleComfortable('${s.id}', '${entryId}')">
+          <div class="toggle-dot">${s.comfortable ? '✓' : ''}</div>
+          ${s.comfortable ? 'Comfortable' : 'Not yet'}
+        </button>
+      </div>
+      ${s.explanation ? `<div class="scenario-explanation">${escHtml(s.explanation)}</div>` : ''}
+      ${s.example ? `<div class="scenario-example">"${escHtml(s.example)}"</div>` : ''}
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="scenario-grid" id="grid-${entryId}">${cards}</div>
+  <div class="scenario-progress"><span>${comfortable}/${total}</span> scenarios comfortable · tap a card to expand</div>`;
+}
+
+function toggleScenarioExpand(scenarioId, entryId) {
+  const exp = document.getElementById(`sc-exp-${scenarioId}`);
+  if (!exp) return;
+  const isOpen = exp.classList.contains('open');
+  // Close all others in this entry
+  const grid = document.getElementById(`grid-${entryId}`);
+  if (grid) grid.querySelectorAll('.scenario-expanded.open').forEach(el => el.classList.remove('open'));
+  if (!isOpen) exp.classList.add('open');
+}
+
+function renderDictSection(e) {
+  const audioBtn = e.dict_audio ? `<button class="play-btn" onclick="playAudio('${escHtml(e.dict_audio)}')" title="Hear pronunciation">▶</button>` : '';
+
+  // Syllable display — already HTML-formatted from MW, plain text otherwise
+  let syllableHtml = '';
+  if (e.dict_syllables) {
+    syllableHtml = `<div style="margin-bottom:6px;">
+      <span style="font-size:11px;color:var(--dict-muted);text-transform:uppercase;letter-spacing:0.05em;">Syllables · </span>
+      <span class="dict-syllables" style="display:inline;">${e.dict_syllables}</span>
+    </div>`;
+  }
+
+  const pronHtml = e.dict_pronunciation
+    ? `<div class="dict-pronunciation"><span class="dict-pron-text">/${escHtml(e.dict_pronunciation)}/</span>${audioBtn}</div>`
+    : (audioBtn ? `<div class="dict-pronunciation">${audioBtn}</div>` : '');
+
+  const ukHtml = e.dict_uk_usage ? `
+    <div class="dict-uk-usage">
+      <div class="dict-uk-label">🇬🇧 Most correct use in the UK</div>
+      <div class="dict-uk-text">${escHtml(e.dict_uk_usage)}</div>
+    </div>` : '';
+
+  return `
+  <div class="dict-section">
+    <div class="dict-label">📖 Dictionary</div>
+    ${syllableHtml}
+    ${pronHtml}
+    ${e.dict_pos ? `<div class="dict-pos">${escHtml(e.dict_pos)}</div>` : ''}
+    <div class="dict-definition">${escHtml(e.dict_definition||'')}</div>
+    ${e.dict_example ? `<div class="dict-example">"${escHtml(e.dict_example)}"</div>` : ''}
+    ${ukHtml}
+  </div>`;
+}
+
+// ── TOGGLE COMFORTABLE ────────────────────────────────────
+async function toggleComfortable(scenarioId, entryId) {
+  const scenarios = scenariosMap[entryId] || [];
+  const s = scenarios.find(x => x.id === scenarioId);
+  if (!s) return;
+  const newVal = !s.comfortable;
+  try {
+    await supaFetch(`grammar_scenarios?id=eq.${scenarioId}`, { method: 'PATCH', body: JSON.stringify({ comfortable: newVal }) });
+    s.comfortable = newVal;
+    // Re-render the entry card
+    const card = document.getElementById(`card-${entryId}`);
+    const entry = entries.find(e => e.id === entryId);
+    if (card && entry) {
+      const newHtml = document.createElement('div');
+      newHtml.innerHTML = renderCard(entry);
+      card.replaceWith(newHtml.firstElementChild);
+    }
+    showToast(newVal ? 'Marked comfortable ✓' : 'Marked not yet');
+  } catch(e) { showToast('Error: ' + e.message); }
+}
+
+// ── MODAL SCENARIOS ───────────────────────────────────────
+function renderModalScenarios() {
+  const container = document.getElementById('scenariosList');
+  container.innerHTML = modalScenarios.map((s, i) => `
+    <div class="scenario-form-item" id="scenario-form-${i}">
+      <div class="scenario-form-header">
+        <span class="scenario-form-label">Scenario ${s.label}</span>
+        <button class="remove-scenario-btn" onclick="removeScenario(${i})" title="Remove">×</button>
+      </div>
+      <div class="form-group" style="margin-bottom:8px;">
+        <label>Label</label>
+        <input type="text" value="${escHtml(s.label)}" oninput="modalScenarios[${i}].label=this.value" style="width:80px;" maxlength="3" />
+      </div>
+      <div class="form-group" style="margin-bottom:8px;">
+        <label>Explanation</label>
+        <div class="rich-toolbar" id="toolbar-${i}">
+          <button class="rtool" title="Bold" onmousedown="event.preventDefault(); richCmd(${i},'bold')"><b>B</b></button>
+          <button class="rtool" title="Italic" onmousedown="event.preventDefault(); richCmd(${i},'italic')"><i>I</i></button>
+          <button class="rtool" title="Underline" onmousedown="event.preventDefault(); richCmd(${i},'underline')"><u>U</u></button>
+          <button class="rtool" title="Highlight" onmousedown="event.preventDefault(); richHighlight(${i})">🖊</button>
+          <div class="rtool-sep"></div>
+          <button class="rtool rtool-not" title="Mark as wrong form" onmousedown="event.preventDefault(); richNotForm(${i})">(not x)</button>
+        </div>
+        <div class="rich-editor" id="editor-${i}" contenteditable="true"
+          oninput="modalScenarios[${i}].explanation_html=this.innerHTML"
+          onblur="modalScenarios[${i}].explanation_html=this.innerHTML"
+        >${s.explanation_html || escHtml(s.explanation||'')}</div>
+        <div class="block-btns">
+          <button class="block-btn" onmousedown="event.preventDefault(); insertConjTable(${i})">⊞ Conjugation table</button>
+          <button class="block-btn" onmousedown="event.preventDefault(); insertWordCluster(${i})">◉ Word cluster</button>
+          <button class="block-btn" onmousedown="event.preventDefault(); insertExampleBlock(${i})">↳ Example sentence</button>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:0;">
+        <label>Short example (for card preview)</label>
+        <input type="text" value="${escHtml(s.example||'')}" oninput="modalScenarios[${i}].example=this.value" placeholder="e.g. She is driving to work." />
+      </div>
+    </div>
+  `).join('');
+}
+
+function richCmd(i, cmd) {
+  const ed = document.getElementById('editor-'+i);
+  if (!ed) return;
+  ed.focus();
+  document.execCommand(cmd, false, null);
+  modalScenarios[i].explanation_html = ed.innerHTML;
+}
+
+function richHighlight(i) {
+  const ed = document.getElementById('editor-'+i);
+  if (!ed) return;
+  ed.focus();
+  document.execCommand('hiliteColor', false, '#fff3b0');
+  modalScenarios[i].explanation_html = ed.innerHTML;
+}
+
+function richNotForm(i) {
+  const ed = document.getElementById('editor-'+i);
+  if (!ed) return;
+  ed.focus();
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return;
+  const range = sel.getRangeAt(0);
+  const selected = range.toString().trim();
+  if (!selected) { document.execCommand('insertHTML', false, '<span class="not-form">(not ...)</span>'); }
+  else { document.execCommand('insertHTML', false, '<span class="not-form">(not ' + selected + ')</span>'); }
+  modalScenarios[i].explanation_html = ed.innerHTML;
+}
+
+function insertConjTable(i) {
+  const ed = document.getElementById('editor-'+i);
+  if (!ed) return;
+  ed.focus();
+  const tableHtml = '<table class="conj-table" contenteditable="true"><thead><tr><th>Subject</th><th>Form</th><th>Example</th></tr></thead><tbody><tr><td>I</td><td>am + -ing</td><td>I am driving</td></tr><tr><td>he / she / it</td><td>is + -ing</td><td>She is working</td></tr><tr><td>we / you / they</td><td>are + -ing</td><td>They are doing</td></tr></tbody></table><p></p>';
+  document.execCommand('insertHTML', false, tableHtml);
+  modalScenarios[i].explanation_html = ed.innerHTML;
+}
+
+function insertWordCluster(i) {
+  const ed = document.getElementById('editor-'+i);
+  if (!ed) return;
+  ed.focus();
+  const clusterHtml = '<div class="word-cluster" contenteditable="true"><span class="word-pill">word1</span> <span class="word-pill">word2</span> <span class="word-pill">word3</span></div><p></p>';
+  document.execCommand('insertHTML', false, clusterHtml);
+  modalScenarios[i].explanation_html = ed.innerHTML;
+}
+
+function insertExampleBlock(i) {
+  const ed = document.getElementById('editor-'+i);
+  if (!ed) return;
+  ed.focus();
+  const blockHtml = '<div class="example-block" contenteditable="true">Type your example sentence here...</div><p></p>';
+  document.execCommand('insertHTML', false, blockHtml);
+  modalScenarios[i].explanation_html = ed.innerHTML;
+}
+
+function addScenario() {
+  const nextLabel = LABELS[modalScenarios.length] || String.fromCharCode(65 + modalScenarios.length);
+  modalScenarios.push({ label: nextLabel, explanation: '', example: '', comfortable: false, position: modalScenarios.length });
+  renderModalScenarios();
+}
+
+function removeScenario(index) {
+  modalScenarios.splice(index, 1);
+  // Re-label
+  modalScenarios.forEach((s, i) => { if (LABELS[i] && s.label === LABELS[i-1] || !s.label) s.label = LABELS[i]; });
+  renderModalScenarios();
+}
+
+// ── MODAL VISIBILITY ──────────────────────────────────────
+function updateModalAreas() {
+  const type = document.getElementById('entryType').value;
+  document.getElementById('grammarScenariosArea').style.display = type === 'grammar' ? 'block' : 'none';
+  document.getElementById('dictLookupArea').style.display = type === 'vocabulary' ? 'block' : 'none';
+  document.getElementById('generalFields').style.display = type === 'grammar' ? 'none' : 'block';
+}
+
+// ── OPEN ADD MODAL ────────────────────────────────────────
+function openAddModal() {
+  editingId = null; pendingDict = null; modalScenarios = [];
+  document.getElementById('modalTitle').textContent = 'New Entry';
+  document.getElementById('entryTitle').value = '';
+  document.getElementById('entryType').value = 'grammar';
+  document.getElementById('entrySource').value = '';
+  document.getElementById('entryBody').value = '';
+  document.getElementById('entryExample').value = '';
+  document.getElementById('lookupWord').value = '';
+  document.getElementById('lookupResult').style.display = 'none';
+  addScenario(); // start with one scenario
+  updateModalAreas();
+  document.getElementById('entryModal').classList.add('open');
+}
+
+// ── EDIT ENTRY ────────────────────────────────────────────
+function editEntry(id) {
+  const e = entries.find(x => x.id === id);
+  if (!e) return;
+  editingId = id;
+  modalScenarios = (scenariosMap[id] || []).map(s => ({...s}));
+  document.getElementById('modalTitle').textContent = 'Edit Entry';
+  document.getElementById('entryTitle').value = e.title || '';
+  document.getElementById('entryType').value = e.type || 'note';
+  document.getElementById('entrySource').value = e.source || '';
+  document.getElementById('entryBody').value = e.body || '';
+  document.getElementById('entryExample').value = e.example || '';
+  document.getElementById('lookupWord').value = e.title || '';
+  document.getElementById('lookupResult').style.display = 'none';
+  pendingDict = e.dict_definition ? { dict_pronunciation: e.dict_pronunciation, dict_audio: e.dict_audio, dict_pos: e.dict_pos, dict_definition: e.dict_definition, dict_example: e.dict_example, dict_syllables: e.dict_syllables || '', dict_uk_usage: e.dict_uk_usage || '' } : null;
+  renderModalScenarios();
+  updateModalAreas();
+  document.getElementById('entryModal').classList.add('open');
+}
+
+// ── SAVE ENTRY ────────────────────────────────────────────
+async function saveEntry() {
+  const title = document.getElementById('entryTitle').value.trim();
+  const type = document.getElementById('entryType').value;
+  const source = document.getElementById('entrySource').value.trim();
+  const body = document.getElementById('entryBody').value.trim();
+  const example = document.getElementById('entryExample').value.trim();
+  if (!title) { showToast('Please enter a title.'); return; }
+
+  const data = {
+    title, type, source, body, example,
+    dict_pronunciation: pendingDict?.dict_pronunciation || '',
+    dict_audio: pendingDict?.dict_audio || '',
+    dict_pos: pendingDict?.dict_pos || '',
+    dict_definition: pendingDict?.dict_definition || '',
+    dict_example: pendingDict?.dict_example || '',
+    dict_syllables: pendingDict?.dict_syllables || '',
+    dict_uk_usage: pendingDict?.dict_uk_usage || '',
+  };
+
+  try {
+    let entryId = editingId;
+    if (editingId) {
+      await supaFetch(`entries?id=eq.${editingId}`, { method: 'PATCH', body: JSON.stringify(data) });
+    } else {
+      const result = await supaFetch('entries', { method: 'POST', body: JSON.stringify(data) });
+      entryId = result[0]?.id;
+    }
+
+    // Handle scenarios for grammar entries
+    if (type === 'grammar' && entryId) {
+      // Delete old scenarios then re-insert
+      await supaFetch(`grammar_scenarios?entry_id=eq.${entryId}`, { method: 'DELETE' });
+      for (let i = 0; i < modalScenarios.length; i++) {
+        const s = modalScenarios[i];
+        if (s.explanation || s.explanation_html || s.example) {
+          await supaFetch('grammar_scenarios', { method: 'POST', body: JSON.stringify({
+            entry_id: entryId, label: s.label, explanation: s.explanation,
+            explanation_html: s.explanation_html || '', 
+            example: s.example, comfortable: s.comfortable || false, position: i
+          })});
+        }
+      }
+    }
+
+    closeModal('entryModal');
+    await loadEntries();
+    showToast(editingId ? 'Entry updated ✓' : 'Entry saved ✓');
+    editingId = null; pendingDict = null; modalScenarios = [];
+  } catch(e) {
+    showToast('Error saving: ' + e.message);
+  }
+}
+
+// ── DELETE ────────────────────────────────────────────────
+async function deleteEntry(id) {
+  if (!confirm('Delete this entry?')) return;
+  try {
+    await supaFetch(`grammar_scenarios?entry_id=eq.${id}`, { method: 'DELETE' });
+    await supaFetch(`entries?id=eq.${id}`, { method: 'DELETE' });
+    await loadEntries();
+    showToast('Deleted.');
+  } catch(e) { showToast('Error: ' + e.message); }
+}
+
+// ── DICTIONARY LOOKUP ─────────────────────────────────────
+const MW_KEY = 'd4b2808f-b8e0-48a8-bb0c-a2590ce1c4fc';
+
+async function lookupWord() {
+  const word = document.getElementById('lookupWord').value.trim();
+  if (!word) return;
+  const btn = document.getElementById('lookupBtn');
+  const resultEl = document.getElementById('lookupResult');
+  btn.disabled = true; btn.textContent = 'Looking up…';
+  resultEl.style.display = 'block';
+  resultEl.innerHTML = `<div class="generating">🔍 Looking up in Merriam-Webster…</div>`;
+  pendingDict = null;
+
+  try {
+    // ── Step 1: Try Merriam-Webster Learner's Dictionary ──
+    let definition = '', pos = '', syllables = '', pron = '', audioUrl = '', dictExample = '';
+    let source = 'Merriam-Webster';
+
+    const mwRes = await fetch(`https://www.dictionaryapi.com/api/v3/references/learners/json/${encodeURIComponent(word)}?key=${MW_KEY}`);
+    const mwData = await mwRes.json();
+    const mwFound = mwData.length > 0 && typeof mwData[0] !== 'string';
+
+    if (mwFound) {
+      const entry = mwData[0];
+      pos = entry.fl || '';
+
+      // Syllables — MW provides them in the headword info
+      const hwi = entry.hwi || {};
+      const hw = hwi.hw || ''; // e.g. "re*sil*ient"
+      if (hw) {
+        // MW uses * as syllable separator, stress in pronunciation
+        const rawSyllables = hw.replace(/\*/g, '-');
+        // Get stress from pronunciation
+        const mwPron = hwi.prs?.[0]?.mw || '';
+        pron = mwPron;
+        // Build syllable display: find which syllable has stress mark ˈ or ˌ
+        // MW mw pron uses ˈ before stressed syllable
+        syllables = buildSyllablesFromMW(rawSyllables, mwPron);
+      }
+
+      // Audio
+      const audioFile = entry.hwi?.prs?.[0]?.sound?.audio || '';
+      if (audioFile) {
+        const subdir = audioFile.startsWith('bix') ? 'bix' : audioFile.startsWith('gg') ? 'gg' : /^[0-9]/.test(audioFile) ? 'number' : audioFile[0];
+        audioUrl = `https://media.merriam-webster.com/audio/prons/en/us/mp3/${subdir}/${audioFile}.mp3`;
+      }
+
+      // Definition
+      const defs = entry.def?.[0]?.sseq || [];
+      outer: for (const sseq of defs) {
+        for (const sense of sseq) {
+          if (sense[0] === 'sense') {
+            const dt = sense[1]?.dt || [];
+            for (const part of dt) {
+              if (part[0] === 'text' && !definition) {
+                definition = part[1].replace(/\{[^}]+\}/g, '').replace(/\*/g, '').trim();
+              }
+              if (part[0] === 'vis' && part[1]?.[0]?.t && !dictExample) {
+                dictExample = part[1][0].t.replace(/\{[^}]+\}/g, '').replace(/\*/g, '').trim();
+              }
+            }
+            if (definition) break outer;
+          }
+        }
+      }
+    }
+
+    // ── Step 2: Fall back to Wiktionary if MW didn't find it ──
+    if (!definition) {
+      resultEl.innerHTML = `<div class="generating">📖 Not in Merriam-Webster — trying Wiktionary…</div>`;
+      source = 'Wiktionary';
+      const wkRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
+      if (wkRes.status === 404) {
+        resultEl.innerHTML = `<div class="lookup-error">Word not found in either dictionary. Check spelling or try the base form.</div>`;
+        return;
+      }
+      const wkData = await wkRes.json();
+      const wkEntry = wkData[0];
+      const phonetics = wkEntry.phonetics || [];
+      const ukPhonetic = phonetics.find(p => p.audio && p.audio.includes('-uk')) || phonetics.find(p => p.audio) || phonetics[0] || {};
+      pron = ukPhonetic.text || phonetics.find(p => p.text)?.text || '';
+      const rawAudio = ukPhonetic.audio || '';
+      audioUrl = rawAudio ? (rawAudio.startsWith('http') ? rawAudio : 'https:' + rawAudio) : '';
+      const meaning = wkEntry.meanings?.[0] || {};
+      pos = meaning.partOfSpeech || '';
+      const defObj = meaning.definitions?.[0] || {};
+      definition = defObj.definition || '';
+      dictExample = defObj.example || '';
+      syllables = pron ? syllablesFromIPA(word, pron) : '';
+    }
+
+    if (!definition) {
+      resultEl.innerHTML = `<div class="lookup-error">Found the word but couldn't extract a definition.</div>`;
+      return;
+    }
+
+    // ── Build display ──
+    const audioBtn = audioUrl ? `<button class="play-btn" onclick="playAudio('${audioUrl}')" title="Hear pronunciation">▶</button>` : '';
+    const sourceLabel = source === 'Merriam-Webster' ? '📘 Merriam-Webster Learner\'s' : '📖 Wiktionary (British English)';
+
+    let syllableHtml = '';
+    if (syllables) {
+      syllableHtml = `<div style="margin-bottom:8px;">
+        <span style="font-size:11px;color:var(--dict-muted);text-transform:uppercase;letter-spacing:0.05em;">Syllables · </span>
+        <span class="dict-syllables" style="display:inline;">${syllables}</span>
+      </div>`;
+    } else {
+      // No IPA available — show manual input
+      syllableHtml = `<div style="margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+        <span style="font-size:11px;color:var(--dict-muted);text-transform:uppercase;letter-spacing:0.05em; white-space:nowrap;">Syllables · </span>
+        <input type="text" id="manualSyllables" placeholder="e.g. con · VE · nor"
+          style="border:none; border-bottom:2px solid var(--dict-border); background:transparent; color:var(--dict-text); font-family:'DM Sans',sans-serif; font-size:13px; padding:2px 6px; outline:none; flex:1;"
+          oninput="updatePendingSyllables(this.value)" />
+        <span style="font-size:11px; color:var(--text-hint); font-style:italic;">type manually</span>
+      </div>`;
+    }
+
+    const pronHtml = pron ? `<div class="lr-pron">/${escHtml(pron)}/ ${audioBtn}</div>` : (audioBtn ? `<div class="lr-pron">${audioBtn}</div>` : '');
+
+    // UK usage — always a manual editable field
+    const existingUkUsage = (pendingDict?.dict_uk_usage) || '';
+    const ukHtml = `<div style="margin-top:12px; padding-top:10px; border-top:1px solid var(--dict-border);">
+      <div class="dict-uk-label">🇬🇧 Most correct use in the UK <span style="font-weight:400;font-style:italic;">(write your own notes)</span></div>
+      <textarea class="uk-usage-edit" id="ukUsageEdit" placeholder="e.g. Formal word used in academic/professional settings. 'Module convenor' is standard in UK universities, equivalent to 'module leader'…" oninput="updatePendingUkUsage(this.value)">${escHtml(existingUkUsage)}</textarea>
+    </div>`;
+
+    resultEl.innerHTML = `<div class="lookup-result">
+      <div style="font-size:10px;color:var(--dict-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">${sourceLabel}</div>
+      <div class="lr-word">${escHtml(word)}</div>
+      ${pos ? `<div class="lr-pos">${escHtml(pos)}</div>` : ''}
+      ${syllableHtml}
+      ${pronHtml}
+      <div class="lr-def">${escHtml(definition)}</div>
+      ${dictExample ? `<div class="lr-ex">"${escHtml(dictExample)}"</div>` : ''}
+      ${ukHtml}
+      <div class="lr-use" style="margin-top:8px;">✓ Everything above will be saved with your entry.</div>
+    </div>`;
+
+    if (!document.getElementById('entryTitle').value.trim()) document.getElementById('entryTitle').value = word;
+
+    pendingDict = {
+      dict_pronunciation: pron, dict_audio: audioUrl, dict_pos: pos,
+      dict_definition: definition, dict_example: dictExample,
+      dict_syllables: syllables, dict_uk_usage: existingUkUsage
+    };
+
+  } catch(err) {
+    resultEl.innerHTML = `<div class="lookup-error">Error: ${err.message}</div>`;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Look up →';
+  }
+}
+
+// Build syllable display from MW headword + pronunciation
+function buildSyllablesFromMW(hwRaw, mwPron) {
+  const syllableList = hwRaw.split('-');
+  if (!mwPron) return syllableList.map(s => escHtml(s)).join(' · ');
+  const pronSyllables = mwPron.split('-');
+  const stressIndex = pronSyllables.findIndex(s => s.includes('ˈ'));
+  return syllableList.map((s, i) => {
+    if (i === stressIndex) return `<span class="stressed">${escHtml(s)}</span>`;
+    return escHtml(s);
+  }).join(' · ');
+}
+
+function syllablesFromIPA(word, ipa) {
+  // Clean IPA — remove slashes and brackets
+  const clean = ipa.replace(/[\/\[\]]/g, '').trim();
+  if (!clean) return escHtml(word);
+
+  // IPA vowel sounds — these mark syllable nuclei
+  const vowels = 'aɑæeɛəɪiɔoʊuʌœøɐɒɜɝɞʏʉɨʌ';
+  const dipthongs = ['aɪ','aʊ','eɪ','ɔɪ','oʊ','ɪə','eə','ʊə'];
+
+  // Find stress marker position in IPA
+  const stressPos = clean.indexOf('ˈ');
+  const secStressPos = clean.indexOf('ˌ');
+
+  // Count syllables by counting vowel clusters in IPA
+  let syllableCount = 0;
+  let inVowel = false;
+  for (let i = 0; i < clean.length; i++) {
+    const ch = clean[i];
+    if (ch === 'ˈ' || ch === 'ˌ') continue;
+    if (vowels.includes(ch)) {
+      if (!inVowel) { syllableCount++; inVowel = true; }
+    } else { inVowel = false; }
+  }
+  if (syllableCount <= 1) return `<span class="stressed">${escHtml(word)}</span>`;
+
+  // Split word into syllables using basic English rules
+  const w = word.toLowerCase();
+  const parts = splitWordIntoSyllables(w, syllableCount);
+
+  // Find which syllable is stressed using IPA stress marker
+  // Count vowel groups before the stress marker
+  let stressedSyllable = 0;
+  if (stressPos >= 0) {
+    let vCount = 0; let wasVowel = false;
+    const engVowels = 'aeiou';
+    for (let i = 0; i < stressPos && i < clean.length; i++) {
+      const ch = clean[i];
+      if (ch === 'ˈ' || ch === 'ˌ') continue;
+      if (vowels.includes(ch)) { if (!wasVowel) { vCount++; wasVowel = true; } }
+      else { wasVowel = false; }
+    }
+    stressedSyllable = vCount;
+  }
+
+  return parts.map((p, i) => {
+    if (i === stressedSyllable) return `<span class="stressed">${escHtml(p)}</span>`;
+    return escHtml(p);
+  }).join(' · ');
+}
+
+function splitWordIntoSyllables(word, count) {
+  if (count === 1) return [word];
+  if (count >= word.length) return word.split('');
+
+  // Simple English syllabification rules
+  const vowels = 'aeiou';
+  const result = [];
+  let current = '';
+  let syllablesSoFar = 0;
+  const remaining = count;
+
+  // Find vowel positions
+  const vowelPos = [];
+  for (let i = 0; i < word.length; i++) {
+    if (vowels.includes(word[i]) && (i === 0 || !vowels.includes(word[i-1]))) {
+      vowelPos.push(i);
+    }
+  }
+
+  if (vowelPos.length !== count) {
+    // Fallback: split as evenly as possible
+    const chunkSize = Math.ceil(word.length / count);
+    const parts = [];
+    for (let i = 0; i < word.length; i += chunkSize) {
+      parts.push(word.slice(i, i + chunkSize));
+    }
+    return parts;
+  }
+
+  // Split between vowel groups
+  const cuts = [];
+  for (let i = 0; i < vowelPos.length - 1; i++) {
+    const v1 = vowelPos[i];
+    const v2 = vowelPos[i + 1];
+    const between = word.slice(v1, v2).replace(/^[aeiou]+/, '');
+    const consonants = between.replace(/[aeiou]/g, '');
+    // Cut after first consonant if multiple, or before consonant if single
+    if (consonants.length === 0) {
+      cuts.push(v2);
+    } else if (consonants.length === 1) {
+      cuts.push(v2 - consonants.length);
+    } else {
+      cuts.push(v1 + between.search(/[^aeiou]/) + 1 + (between.match(/^[aeiou]*/)[0].length));
+    }
+  }
+
+  let prev = 0;
+  for (const cut of cuts) {
+    if (cut > prev && cut < word.length) {
+      result.push(word.slice(prev, cut));
+      prev = cut;
+    }
+  }
+  result.push(word.slice(prev));
+  return result.filter(Boolean);
+}
+
+function updatePendingUkUsage(val) {
+  if (pendingDict) pendingDict.dict_uk_usage = val;
+}
+
+function updatePendingSyllables(val) {
+  if (pendingDict) pendingDict.dict_syllables = val;
+}
+
+// ── SPEAK ─────────────────────────────────────────────────
+function getBritishVoice() {
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = [
+    v => v.name.includes('Daniel') && v.lang.startsWith('en-GB'),
+    v => v.name.includes('Serena') && v.lang.startsWith('en-GB'),
+    v => v.name.includes('Martha') && v.lang.startsWith('en-GB'),
+    v => v.lang === 'en-GB' && v.name.toLowerCase().includes('neural'),
+    v => v.lang === 'en-GB',
+    v => v.lang.startsWith('en'),
+  ];
+  for (const test of preferred) { const m = voices.find(test); if (m) return m; }
+  return null;
+}
+
+function buildSpeakText(entry) {
+  const scenarios = scenariosMap[entry.id] || [];
+  let parts = [entry.title + '.'];
+  if (entry.type === 'grammar' && scenarios.length) {
+    scenarios.forEach(s => {
+      parts.push(`Scenario ${s.label}.`);
+      if (s.explanation) parts.push(s.explanation);
+      if (s.example) parts.push('Example: ' + s.example);
+    });
+  } else {
+    if (entry.type === 'vocabulary') {
+      if (entry.dict_pos) parts.push(entry.dict_pos + '.');
+      if (entry.dict_definition) parts.push(entry.dict_definition);
+      if (entry.dict_example) parts.push('Example: ' + entry.dict_example);
+    }
+    if (entry.body) parts.push(entry.body);
+    if (entry.example) parts.push('My example: ' + entry.example);
+  }
+  return parts.join(' ');
+}
+
+function speakEntry(id) {
+  if (!window.speechSynthesis) { showToast('Speech not supported in this browser.'); return; }
+  const entry = entries.find(e => e.id === id);
+  if (!entry) return;
+  stopSpeaking();
+  const text = buildSpeakText(entry);
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'en-GB'; utter.rate = 0.92; utter.pitch = 1;
+  const go = () => {
+    const voice = getBritishVoice();
+    if (voice) utter.voice = voice;
+    currentSpeakId = id;
+    const sb = document.getElementById(`speak-${id}`);
+    const st = document.getElementById(`stop-${id}`);
+    if (sb) sb.style.display = 'none';
+    if (st) st.style.display = 'inline';
+    utter.onend = utter.onerror = () => {
+      currentSpeakId = null;
+      if (sb) sb.style.display = 'inline';
+      if (st) st.style.display = 'none';
+    };
+    window.speechSynthesis.speak(utter);
+  };
+  window.speechSynthesis.getVoices().length > 0 ? go() : (window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.onvoiceschanged = null; go(); });
+}
+
+function stopSpeaking() {
+  window.speechSynthesis.cancel();
+  if (currentSpeakId) {
+    const sb = document.getElementById(`speak-${currentSpeakId}`);
+    const st = document.getElementById(`stop-${currentSpeakId}`);
+    if (sb) sb.style.display = 'inline';
+    if (st) st.style.display = 'none';
+    currentSpeakId = null;
+  }
+}
+
+function playAudio(url) { new Audio(url).play().catch(() => showToast('Could not play audio.')); }
+
+// ── UTILS ─────────────────────────────────────────────────
+function escHtml(str) { return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function formatDate(iso) { if (!iso) return ''; return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); }
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ── EVENTS ────────────────────────────────────────────────
+document.getElementById('addEntryBtn').addEventListener('click', openAddModal);
+document.getElementById('saveEntry').addEventListener('click', saveEntry);
+document.getElementById('cancelEntry').addEventListener('click', () => { closeModal('entryModal'); editingId = null; pendingDict = null; modalScenarios = []; });
+document.getElementById('entryType').addEventListener('change', updateModalAreas);
+document.getElementById('addScenarioBtn').addEventListener('click', addScenario);
+document.getElementById('lookupBtn').addEventListener('click', lookupWord);
+document.getElementById('lookupWord').addEventListener('keydown', e => { if (e.key === 'Enter') lookupWord(); });
+document.getElementById('filterBar').addEventListener('click', e => {
+  if (!e.target.dataset.filter) return;
+  currentFilter = e.target.dataset.filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  e.target.classList.add('active');
+  renderEntries();
+});
+document.getElementById('searchInput').addEventListener('input', e => { searchQuery = e.target.value; renderEntries(); });
+document.getElementById('settingsBtn').addEventListener('click', () => {
+  document.getElementById('settingsUrl').value = SUPA_URL;
+  document.getElementById('settingsKey').value = SUPA_KEY;
+  document.getElementById('settingsModal').classList.add('open');
+});
+document.getElementById('cancelSettings').addEventListener('click', () => closeModal('settingsModal'));
+document.getElementById('saveSettings').addEventListener('click', () => { closeModal('settingsModal'); showToast('Settings are hardcoded in this version.'); });
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+
+
+// ── GRAMMAR IN USE ────────────────────────────────────────
+const GIU_UNITS = [
+{
+  id: 1,
+  title: 'Present continuous (I am doing)',
+  scenarios: [
+    {
+      label: 'A',
+      rule: 'am/is/are + -ing = action happening now, at the time of speaking. The action is not finished.',
+      insight: 'The <strong>formula</strong> is the foundation: subject + <strong>am/is/are</strong> + <strong>verb-ing</strong>. This is the structure all other scenarios build on. Master this before moving to B, C, D.',
+      body: [
+        { type: 'text', content: 'Sarah is in her car. She is on her way to work. She\'s <strong>driving</strong> to work. (= She <strong>is driving</strong>...)' },
+        { type: 'text', content: 'This means: she is driving <em>now</em>, at the time of speaking. The action is not finished.' },
+        { type: 'text', content: '<strong>am/is/are + -ing</strong> is the <em>present continuous</em>:' },
+        { type: 'table', rows: [
+          ['I', 'am (= I\'m)', 'driving'],
+          ['he/she/it', 'is (= he\'s etc.)', 'working'],
+          ['we/you/they', 'are (= we\'re etc.)', 'doing etc.']
+        ]},
+      ]
+    },
+    {
+      label: 'B',
+      rule: 'I am doing something = I started doing it and I haven\'t finished; I\'m in the middle of doing it.',
+      insight: 'The action does <strong>not</strong> have to be happening at the exact second of speaking — it just needs to be <strong>unfinished</strong>. "I\'m reading a book" is correct even if you\'re not holding it right now. Think: <em>started but not done yet.</em> Key difference from A: A = happening at this very moment. B = in the middle of it, even if paused.',
+      body: [
+        { type: 'text', content: 'Please don\'t make so much noise. I\'m <strong>trying</strong> to work. <span class="not">(not I try)</span>' },
+        { type: 'text', content: '\'Where\'s Mark?\' \'He\'s <strong>having</strong> a shower.\' <span class="not">(not He has a shower)</span>' },
+        { type: 'text', content: 'Let\'s go out now. It <strong>isn\'t raining</strong> any more. <span class="not">(not It doesn\'t rain)</span>' },
+        { type: 'text', content: 'How\'s your new job? <strong>Are</strong> you <strong>enjoying</strong> it?' },
+        { type: 'text', content: 'What\'s all that noise? <strong>What\'s going on?</strong> or <strong>What\'s happening?</strong>' },
+        { type: 'text', content: 'Sometimes the action is not happening at the time of speaking. For example:' },
+        { type: 'bubble', content: 'I\'m reading a really good book at the moment. It\'s about a man who...' },
+        { type: "text", content: "Steve says '<strong>I'm reading</strong>...' but he is <em>not</em> reading the book at the time of speaking. He means that he has started reading the book, but has not finished it yet. He is in the middle of reading it." },
+        { type: 'text', content: 'Some more examples:' },
+        { type: 'example', content: 'Kate wants to work in Italy, so she\'s <strong>learning</strong> Italian. (but perhaps she isn\'t learning Italian at the time of speaking)' },
+        { type: 'example', content: 'Some friends of mine <strong>are building</strong> their own house. They hope to finish it next summer.' },
+      ]
+    },
+    {
+      label: 'C',
+      rule: 'You can use the present continuous with today / this week / this year etc. (periods around now)',
+      insight: 'Key difference from B: B focuses on a specific action in progress. C focuses on a <strong>time period</strong> (today, this week, this year). Both use present continuous, but C answers the question <em>"what is happening in your life these days?"</em> not <em>"what are you doing right now?"</em>',
+      body: [
+        { type: 'text', content: 'A: You\'re <strong>working</strong> hard <strong>today</strong>. <span class="not">(not You work hard today)</span>' },
+        { type: 'text', content: 'B: Yes, I have a lot to do.' },
+        { type: 'example', content: 'The company I work for <strong>isn\'t doing</strong> so well <strong>this year</strong>.' },
+      ]
+    },
+    {
+      label: 'D',
+      rule: 'We use the present continuous when we talk about a change that has started to happen.',
+      insight: 'This is the most distinct scenario. The key verbs here are <strong>change verbs</strong> — getting, becoming, rising, falling. If you can replace the verb with "changing", present continuous is likely correct. <span class="not">Not</span>: "The population increases" — the continuous form shows the change is <em>already in motion.</em>',
+      body: [
+        { type: 'text', content: 'We often use these verbs in this way:' },
+        { type: 'cluster', words: ['getting','becoming','starting','beginning','changing','improving','increasing','rising','falling','growing'] },
+        { type: 'example', content: 'Is your English <strong>getting</strong> better? <span class="not">(not Does your English get better)</span>' },
+        { type: 'example', content: 'The population of the world <strong>is increasing</strong> very fast. <span class="not">(not increases)</span>' },
+        { type: 'example', content: 'At first I didn\'t like my job, but I\'m <strong>starting</strong> to enjoy it now. <span class="not">(not I start)</span>' },
+      ]
+    }
+  ],
+  exercises: [
+    {
+      id: '1.1',
+      type: 'fill',
+      title: "What's happening in the pictures? Choose from these verbs:",
+      wordbank: ['cross','hide','scratch','take','tie','wave'],
+      example: { text: "1  She's <u>taking</u> a picture." },
+      items: [
+        { prefix: '2  He', answer: "is tying", suffix: 'a shoelace.' },
+        { prefix: '3', answer: "She's crossing", suffix: 'the road.' },
+        { prefix: '4', answer: "He's scratching", suffix: 'his head.' },
+        { prefix: '5', answer: "She's hiding", suffix: 'behind a tree.' },
+        { prefix: '6', answer: "He's waving", suffix: 'to somebody.' },
+      ]
+    },
+    {
+      id: '1.2',
+      type: 'match',
+      title: 'The sentences on the right follow those on the left. Which sentence goes with which?',
+      example: { text: "1  Please don't make so much noise. &rarr; <u>f</u>" },
+      left: [
+        'We need to leave soon.',
+        "I don't have anywhere to live right now.",
+        'I need to eat something soon.',
+        "They don't need their car any more.",
+        'Things are not so good at work.',
+        "It isn't true what they say.",
+        "We're going to get wet."
+      ],
+      right: [
+        { letter: 'a', text: "I'm getting hungry." },
+        { letter: 'b', text: "They're lying." },
+        { letter: 'c', text: "It's starting to rain." },
+        { letter: 'd', text: "They're trying to sell it." },
+        { letter: 'e', text: "It's getting late." },
+        { letter: 'f', text: "I'm trying to work." },
+        { letter: 'g', text: "I'm staying with friends." },
+        { letter: 'h', text: 'The company is losing money.' }
+      ],
+      answers: ['e','g','a','d','h','b','c']
+    },
+    {
+      id: '1.3',
+      type: 'fill',
+      title: 'Write questions. Use the present continuous.',
+      example: { text: "1  What's all that noise? &rarr; <u>What's happening?</u> &nbsp;<em>(what / happen?)</em>" },
+      items: [
+        { prefix: "2  What's the matter?", answer: 'Why are you crying?', suffix: '', hint: '(why / you / cry?)' },
+        { prefix: "3  Where's your mother?", answer: 'Is she working today?', suffix: '', hint: '(she / work / today?)' },
+        { prefix: "4  I haven't seen you for ages.", answer: 'What are you doing these days?', suffix: '', hint: '(what / you / do / these days?)' },
+        { prefix: '5  Amy is a student.', answer: 'What is she studying?', suffix: '', hint: '(what / she / study?)' },
+        { prefix: '6  Who are those people?', answer: 'What are they doing?', suffix: '', hint: '(what / they / do?)' },
+        { prefix: '7  I heard you started a new job.', answer: 'Are you enjoying it?', suffix: '', hint: '(you / enjoy / it?)' },
+        { prefix: "8  We're not in a hurry.", answer: 'Why are you walking so fast?', suffix: '', hint: '(why / you / walk / so fast?)' },
+      ]
+    },
+    {
+      id: '1.4',
+      type: 'fill',
+      title: "Put the verb into the correct form, positive (I'm doing etc.) or negative (I'm not doing etc.).",
+      example: { text: "1  Please don't make so much noise. <u>I'm trying</u> (I / try) to work. &nbsp; 2  Let's go out now. <u>It isn't raining</u> (it / rain) any more." },
+      items: [
+        { prefix: '3  You can turn off the radio.', answer: "I'm not listening", suffix: '(I / listen) to it.', hint: '' },
+        { prefix: "4  Kate phoned last night. She's on holiday with friends.", answer: "She's having", suffix: "(She / have) a great time and doesn't want to come back.", hint: '' },
+        { prefix: '5  Andrew started evening classes recently.', answer: "He's learning", suffix: '(He / learn) Japanese.', hint: '' },
+        { prefix: '6  Paul and Sarah have had an argument and now', answer: "they aren't speaking", suffix: '(they / speak) to one another.', hint: '' },
+        { prefix: '7  The situation is already very bad and now', answer: "it's getting", suffix: '(it / get) worse.', hint: '' },
+        { prefix: '8  Tim', answer: "isn't working", suffix: "(work) today. He's taken the day off.", hint: '' },
+        { prefix: '9', answer: "I'm looking", suffix: '(I / look) for Sophie. Do you know where she is?', hint: '' },
+        { prefix: '10  The washing machine has been repaired.', answer: "It's working", suffix: '(It / work) now.', hint: '' },
+        { prefix: '11', answer: "They're building", suffix: '(They / build) a new hospital. It will be finished next year.', hint: '' },
+        { prefix: "12  Ben is a student, but he's not very happy.", answer: "He isn't enjoying", suffix: '(He / enjoy) his course.', hint: '' },
+        { prefix: '13', answer: 'The weather is changing', suffix: "(The weather / change). Look at those clouds. I think it's going to rain.", hint: '' },
+        { prefix: '14  Dan has been in the same job for a long time.', answer: "He's starting", suffix: '(He / start) to get bored with it.', hint: '' },
+      ]
+    }
+  ]
+}
+];
+
+let currentGiuUnit = null;
+let currentScenarioIndex = 0;
+let comfortableMap = {}; // scenarioKey -> bool
+let reflectionsMap = {}; // unitId-label -> text
+let reflectionDebounce = null;
+
+function showGIU() {
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('giuScreen').classList.add('active');
+  loadGiuReflections();
+  renderGiuList();
+  location.hash = 'giu';
+}
+
+async function loadGiuReflections() {
+  try {
+    const rows = await supaFetch('giu_reflections?select=unit_id,scenario_label,reflection');
+    rows.forEach(r => {
+      reflectionsMap[r.unit_id + '-' + r.scenario_label] = r.reflection || '';
+    });
+  } catch(e) { console.warn('Could not load reflections:', e); }
+}
+
+async function saveGiuReflection(unitId, label, text) {
+  const statusEl = document.getElementById('ref-status-' + unitId + '-' + label);
+  try {
+    await supaFetch('giu_reflections', {
+      method: 'POST',
+      headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify({ unit_id: unitId, scenario_label: label, reflection: text, updated_at: new Date().toISOString() })
+    });
+    reflectionsMap[unitId + '-' + label] = text;
+    if (statusEl) { statusEl.classList.add('show'); setTimeout(() => statusEl.classList.remove('show'), 2000); }
+  } catch(e) { console.warn('Save reflection error:', e); }
+}
+
+function showJournal() {
+  hideAllScreens();
+  document.getElementById('appScreen').style.display = 'block';
+  location.hash = '';
+}
+
+function renderGiuList() {
+  document.getElementById('giuListView').style.display = 'block';
+  document.getElementById('giuDetailView').style.display = 'none';
+  const list = document.getElementById('giuUnitList');
+  list.innerHTML = GIU_UNITS.map(u => {
+    const done = u.scenarios.filter(sc => comfortableMap[u.id + '-' + sc.label]).length;
+    const total = u.scenarios.length;
+    const pct = total ? Math.round(done / total * 100) : 0;
+    return `
+    <div class="giu-unit-card" onclick="openGiuUnit(${u.id})">
+      <div class="giu-unit-card-num">Unit ${u.id}</div>
+      <div class="giu-unit-card-title">${u.title}</div>
+      <div style="font-size:12px; color:var(--text-hint); margin-bottom:10px;">${u.scenarios.length} scenarios · ${u.exercises.length} exercises</div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="giu-unit-progress" style="flex:1;"><div class="giu-unit-progress-bar" style="width:${pct}%"></div></div>
+        <span style="font-size:11px; color:var(--text-hint);">${pct}%</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openGiuUnit(id, tab) {
+  currentGiuUnit = GIU_UNITS.find(u => u.id === id);
+  if (!currentGiuUnit) return;
+  currentScenarioIndex = 0;
+  document.getElementById('giuListView').style.display = 'none';
+  document.getElementById('giuDetailView').style.display = 'block';
+  document.getElementById('giuUnitBadge').textContent = 'Unit ' + currentGiuUnit.id;
+  document.getElementById('giuUnitTitle').textContent = currentGiuUnit.title;
+  renderGiuLearn();
+  renderGiuExercises();
+  const activeTab = tab || 'learn';
+  document.querySelectorAll('.giu-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.giu-panel').forEach(p => p.classList.remove('active'));
+  if (activeTab === 'exercise') {
+    document.querySelectorAll('.giu-tab')[1].classList.add('active');
+    document.getElementById('giuExercisePanel').classList.add('active');
+  } else {
+    document.querySelector('.giu-tab').classList.add('active');
+    document.getElementById('giuLearnPanel').classList.add('active');
+  }
+  location.hash = 'giu-unit-' + id + '-' + activeTab;
+}
+
+function switchGiuTab(tab, btn) {
+  document.querySelectorAll('.giu-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.giu-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(tab === 'learn' ? 'giuLearnPanel' : 'giuExercisePanel').classList.add('active');
+  if (currentGiuUnit) location.hash = 'giu-unit-' + currentGiuUnit.id + '-' + tab;
+}
+
+const SC_PILL_CLASSES = ['a','b','c','d','e','f','g','h'];
+
+function renderGiuLearn() {
+  const u = currentGiuUnit;
+  const i = currentScenarioIndex;
+  const sc = u.scenarios[i];
+  const key = u.id + '-' + sc.label;
+  const isComfortable = !!comfortableMap[key];
+
+  // Overall progress bar
+  const done = u.scenarios.filter(s => comfortableMap[u.id + '-' + s.label]).length;
+  const pct = Math.round(done / u.scenarios.length * 100);
+  const progressHtml = `
+    <div class="giu-overall-progress">
+      <span class="giu-op-label">Learning progress</span>
+      <div class="giu-op-bar"><div class="giu-op-fill" style="width:${pct}%"></div></div>
+      <span class="giu-op-pct">${pct}%</span>
+    </div>`;
+
+  // Pill nav
+  const pills = u.scenarios.map((s, idx) => {
+    const k = u.id + '-' + s.label;
+    const cls = SC_PILL_CLASSES[idx] || 'a';
+    const isDone = !!comfortableMap[k];
+    return `<div class="giu-sc-pill ${cls} ${idx === i ? 'active' : ''} ${isDone ? 'done' : ''}"
+      onclick="goToScenario(${idx})">
+      <div class="giu-sc-dot"></div>${s.label}
+    </div>`;
+  }).join('');
+
+  const cls = SC_PILL_CLASSES[i] || 'a';
+  const insightHtml = sc.insight ? `
+    <div class="giu-insight">
+      <div class="giu-insight-label">🔑 Key insight</div>
+      <div class="giu-insight-text">${sc.insight}</div>
+    </div>` : '';
+  const reflectionKey = u.id + '-' + sc.label;
+  const existingReflection = reflectionsMap[reflectionKey] || '';
+  const reflectionHtml = `
+    <div class="giu-reflection">
+      <div class="giu-reflection-label">📝 My reflection</div>
+      <textarea id="ref-${u.id}-${sc.label}" placeholder="Write your own thoughts here... What did you find confusing? How will you remember this? Any examples from your own life?"
+        oninput="onReflectionInput(${u.id}, '${sc.label}', this.value)"
+      >${escHtml(existingReflection)}</textarea>
+      <div class="giu-reflection-save">
+        <button class="giu-save-btn" onclick="saveGiuReflection(${u.id}, '${sc.label}', document.getElementById('ref-${u.id}-${sc.label}').value)">Save reflection</button>
+        <span class="giu-save-status" id="ref-status-${u.id}-${sc.label}">Saved ✓</span>
+      </div>
+    </div>`;
+  const cardHtml = `
+    <div class="giu-sc-card ${cls}">
+      <div class="giu-sc-header">
+        <div class="giu-sc-badge ${cls}">${sc.label}</div>
+        <div class="giu-sc-rule">${sc.rule}</div>
+      </div>
+      ${insightHtml}
+      <div class="giu-sc-body">${sc.body.map(b => renderGiuBlock(b)).join('')}</div>
+      ${reflectionHtml}
+      <div class="giu-sc-footer">
+        <button class="giu-comfortable-btn ${isComfortable ? 'on' : ''}"
+          onclick="toggleGiuComfortable('${key}')">
+          ${isComfortable ? '✓ Comfortable' : '○ Mark comfortable'}
+        </button>
+        <div class="giu-sc-arrows">
+          <button class="giu-sc-arrow" onclick="goToScenario(${i - 1})" ${i === 0 ? 'disabled' : ''}>←</button>
+          <button class="giu-sc-arrow" onclick="goToScenario(${i + 1})" ${i === u.scenarios.length - 1 ? 'disabled' : ''}>→</button>
+        </div>
+      </div>
+    </div>`;
+
+  document.getElementById('giuLearnPanel').innerHTML = progressHtml +
+    `<div class="giu-sc-nav">${pills}</div>` + cardHtml;
+}
+
+function goToScenario(idx) {
+  const u = currentGiuUnit;
+  if (!u || idx < 0 || idx >= u.scenarios.length) return;
+  currentScenarioIndex = idx;
+  renderGiuLearn();
+}
+
+function onReflectionInput(unitId, label, text) {
+  reflectionsMap[unitId + '-' + label] = text;
+  clearTimeout(reflectionDebounce);
+  reflectionDebounce = setTimeout(() => saveGiuReflection(unitId, label, text), 2000);
+}
+
+function toggleGiuComfortable(key) {
+  comfortableMap[key] = !comfortableMap[key];
+  renderGiuLearn();
+  renderGiuList(); // update unit card progress
+}
+
+function renderGiuBlock(b) {
+  if (b.type === 'text') return `<p>${b.content}</p>`;
+  if (b.type === 'example') return `<div class="giu-example-block">${b.content}</div>`;
+  if (b.type === 'bubble') return `<div class="giu-speech-bubble">"${b.content}"</div>`;
+  if (b.type === 'cluster') return `<div class="giu-word-cluster">${b.words.map(w => `<span class="giu-word-pill">${w}</span>`).join('')}</div>`;
+  if (b.type === 'table') return `
+    <table class="giu-conj-table">
+      ${b.rows.map(r => `<tr>${r.map((c,ci) => ci===2 ? `<td><strong>${c}</strong></td>` : `<td>${c}</td>`).join('')}</tr>`).join('')}
+    </table>`;
+  return '';
+}
+
+function renderGiuExercises() {
+  const u = currentGiuUnit;
+  const html = u.exercises.map(ex => renderGiuExercise(ex)).join('');
+  document.getElementById('giuExercisePanel').innerHTML = html;
+}
+
+function renderGiuExercise(ex) {
+  // Example row — shown as read-only, greyed out
+  const exampleHtml = ex.example ? `
+    <div class="giu-ex-example">
+      <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-hint); margin-right:6px;">Example:</span>
+      ${ex.example.text}
+    </div>` : '';
+
+  let body = '';
+  if (ex.type === 'fill') {
+    const wordbank = ex.wordbank ? `<div style="margin-bottom:12px; display:flex; gap:8px; flex-wrap:wrap;">${ex.wordbank.map(w => `<span style="background:var(--accent-light);color:var(--accent);padding:2px 10px;border-radius:10px;font-size:13px;">${w}</span>`).join('')}</div>` : '';
+    body = wordbank + exampleHtml + ex.items.map((item, i) => `
+      <div class="giu-fill-item">
+        <span class="giu-item-num" style="min-width:160px; color:var(--text-muted); font-size:13px;">${item.prefix}</span>
+        <input class="giu-blank" id="ex-${ex.id}-${i}" type="text" placeholder="..." autocomplete="off" spellcheck="false" style="min-width:160px;" />
+        <span style="font-size:13px; color:var(--text-muted);">${item.suffix || ''}</span>
+        ${item.hint ? `<span class="giu-hint">${item.hint}</span>` : ''}
+        <span class="giu-answer-reveal" id="ans-${ex.id}-${i}">&rarr; ${item.answer}</span>
+      </div>`).join('');
+  } else if (ex.type === 'match') {
+    const rightHtml = ex.right.map(r => `<div style="font-size:13px; color:var(--text-muted); margin-bottom:6px;"><strong style="color:var(--text);">${r.letter}</strong> &nbsp;${r.text}</div>`).join('');
+    // offset by 1 since example is item 1
+    const startNum = ex.example ? 2 : 1;
+    const matchItems = ex.left.map((l, i) => `
+      <div class="giu-fill-item" style="margin-bottom:8px;">
+        <span class="giu-item-num">${i + startNum}</span>
+        <span style="flex:1; font-size:13px; color:var(--text-muted);">${l}</span>
+        <input class="giu-match-input" id="ex-${ex.id}-${i}" type="text" maxlength="1" placeholder="?" autocomplete="off" />
+        <span class="giu-answer-reveal" id="ans-${ex.id}-${i}">&rarr; ${ex.answers[i]}</span>
+      </div>`).join('');
+    body = exampleHtml + `<div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+      <div>${matchItems}</div>
+      <div style="background:var(--bg); border-radius:var(--radius); padding:12px;">${rightHtml}</div>
+    </div>`;
+  }
+  return `
+  <div class="giu-exercise" id="exercise-${ex.id}">
+    <div class="giu-ex-header">
+      <span class="giu-ex-badge">${ex.id}</span>
+      <span class="giu-ex-title">${ex.title}</span>
+    </div>
+    ${body}
+    <div class="giu-check-row">
+      <button class="giu-check-btn" onclick="checkExercise('${ex.id}')">Check answers</button>
+      <button class="giu-reset-btn" onclick="resetExercise('${ex.id}')">↺ Reset</button>
+      <span class="giu-score" id="score-${ex.id}"></span>
+    </div>
+  </div>
+  `;
+}
+
+function checkExercise(exId) {
+  const ex = currentGiuUnit.exercises.find(e => e.id === exId);
+  if (!ex) return;
+  let correct = 0, total = 0;
+  const items = ex.items || ex.left.map((_, i) => ({ answer: ex.answers[i] }));
+  items.forEach((item, i) => {
+    const input = document.getElementById(`ex-${exId}-${i}`);
+    const reveal = document.getElementById(`ans-${exId}-${i}`);
+    if (!input) return;
+    total++;
+    const userVal = input.value.trim().toLowerCase();
+    const correctVal = item.answer.toLowerCase();
+    const isCorrect = userVal === correctVal || correctVal.includes(userVal) && userVal.length > 2;
+    input.classList.remove('correct','wrong');
+    input.classList.add(isCorrect ? 'correct' : 'wrong');
+    if (isCorrect) { correct++; reveal.classList.remove('show'); }
+    else { reveal.classList.add('show'); }
+  });
+  const scoreEl = document.getElementById(`score-${exId}`);
+  scoreEl.innerHTML = `<span>${correct}/${total}</span> correct`;
+}
+
+function resetExercise(exId) {
+  const ex = currentGiuUnit.exercises.find(e => e.id === exId);
+  if (!ex) return;
+  const items = ex.items || ex.left.map((_, i) => ({ answer: ex.answers[i] }));
+  items.forEach((item, i) => {
+    const input = document.getElementById(`ex-${exId}-${i}`);
+    const reveal = document.getElementById(`ans-${exId}-${i}`);
+    if (input) { input.value = ''; input.classList.remove('correct','wrong'); }
+    if (reveal) reveal.classList.remove('show');
+  });
+  const scoreEl = document.getElementById(`score-${exId}`);
+  if (scoreEl) scoreEl.innerHTML = '';
+}
+
+// Nav events
+document.getElementById('giuNavBtn').addEventListener('click', showGIU);
+document.getElementById('readNavBtn').addEventListener('click', showRead);
+document.getElementById('newsNavBtn').addEventListener('click', showNews);
+document.getElementById('giuBackBtn').addEventListener('click', () => {
+  document.getElementById('giuListView').style.display = 'block';
+  document.getElementById('giuDetailView').style.display = 'none';
+  location.hash = 'giu';
+});
+document.getElementById('readerBackBtn').addEventListener('click', () => {
+  document.getElementById('readerView').classList.remove('active');
+  document.getElementById('readListView').style.display = 'block';
+});
+// Override journal nav logo to go back
+document.querySelector('.nav-logo').style.cursor = 'pointer';
+document.querySelector('.nav-logo').addEventListener('click', () => {
+  showJournal();
+});
+
+
+// ── SCREEN MANAGEMENT ─────────────────────────────────────
+function hideAllScreens() {
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('giuScreen').classList.remove('active');
+  document.getElementById('readScreen').classList.remove('active');
+  document.getElementById('newsScreen').classList.remove('active');
+}
+
+function showRead() {
+  hideAllScreens();
+  document.getElementById('readScreen').classList.add('active');
+  location.hash = 'read';
+  loadBooks();
+}
+
+function showNews() {
+  hideAllScreens();
+  document.getElementById('newsScreen').classList.add('active');
+  location.hash = 'news';
+  loadNews('football');
+}
+
+// ── BOOKS / READING ───────────────────────────────────────
+const BOOKS = {
+  novels: [
+    { id: 1342, title: 'Pride and Prejudice', author: 'Jane Austen', emoji: '💕' },
+    { id: 11, title: "Alice's Adventures in Wonderland", author: 'Lewis Carroll', emoji: '🐇' },
+    { id: 84, title: 'Frankenstein', author: 'Mary Shelley', emoji: '⚡' },
+    { id: 1661, title: 'The Adventures of Sherlock Holmes', author: 'Arthur Conan Doyle', emoji: '🔍' },
+    { id: 98, title: 'A Tale of Two Cities', author: 'Charles Dickens', emoji: '🏙' },
+    { id: 2701, title: 'Moby Dick', author: 'Herman Melville', emoji: '🐋' },
+    { id: 1260, title: 'Jane Eyre', author: 'Charlotte Brontë', emoji: '📖' },
+    { id: 768, title: 'Wuthering Heights', author: 'Emily Brontë', emoji: '🌧' },
+    { id: 74, title: 'The Adventures of Tom Sawyer', author: 'Mark Twain', emoji: '🚣' },
+    { id: 1080, title: 'The Picture of Dorian Gray', author: 'Oscar Wilde', emoji: '🖼' },
+    { id: 2554, title: 'Crime and Punishment', author: 'Fyodor Dostoevsky', emoji: '⚖' },
+    { id: 174, title: 'Of Human Bondage', author: 'W. Somerset Maugham', emoji: '🔗' },
+  ],
+  short: [
+    { id: 219, title: 'Heart of Darkness', author: 'Joseph Conrad', emoji: '🌑' },
+    { id: 345, title: 'Dracula', author: 'Bram Stoker', emoji: '🧛' },
+    { id: 1952, title: 'The Yellow Wallpaper', author: 'Charlotte Perkins Gilman', emoji: '🌼' },
+    { id: 2148, title: 'The Strange Case of Dr Jekyll and Mr Hyde', author: 'Robert Louis Stevenson', emoji: '🧪' },
+    { id: 910, title: 'The Country of the Blind', author: 'H.G. Wells', emoji: '👁' },
+    { id: 45, title: 'The Great God Pan', author: 'Arthur Machen', emoji: '🌿' },
+    { id: 23, title: 'Narrative of the Life of Frederick Douglass', author: 'Frederick Douglass', emoji: '✊' },
+    { id: 514, title: 'Little Women', author: 'Louisa May Alcott', emoji: '👭' },
+  ]
+};
+
+let currentReadType = 'novels';
+let readerFontSize = 17;
+let currentBookId = null;
+let readerChunks = [];
+let readerChunkIndex = 0;
+const CHUNK_WORDS = 800;
+
+function setReadType(type, btn) {
+  currentReadType = type;
+  document.querySelectorAll('.read-type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadBooks();
+}
+
+function loadBooks() {
+  document.getElementById('readListView').style.display = 'block';
+  document.getElementById('readerView').classList.remove('active');
+  const books = BOOKS[currentReadType];
+  document.getElementById('bookGrid').innerHTML = books.map(b => `
+    <div class="book-card" onclick="openBook(${b.id}, '${escHtml(b.title)}', '${escHtml(b.author)}')">
+      <div class="book-cover">${b.emoji}</div>
+      <div class="book-title">${escHtml(b.title)}</div>
+      <div class="book-author">${escHtml(b.author)}</div>
+    </div>`).join('');
+}
+
+async function openBook(id, title, author) {
+  currentBookId = id;
+  readerChunkIndex = parseInt(localStorage.getItem('read-pos-' + id) || '0');
+  document.getElementById('readerTitle').textContent = title;
+  document.getElementById('readerAuthor').textContent = 'by ' + author;
+  document.getElementById('readerContent').innerHTML = '<div class="loading"><div class="spinner"></div>Loading…</div>';
+  document.getElementById('readListView').style.display = 'none';
+  document.getElementById('readerView').classList.add('active');
+  document.getElementById('readerContent').style.fontSize = readerFontSize + 'px';
+
+  try {
+    const res = await fetch(`https://gutendex.com/books/${id}`);
+    const meta = await res.json();
+    const txtUrl = Object.entries(meta.formats).find(([k]) => k.includes('text/plain') && !k.includes('zip'))?.[1];
+    if (!txtUrl) throw new Error('No text format available');
+
+    const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(txtUrl)}`;
+    const textRes = await fetch(proxy);
+    const rawText = await textRes.text();
+
+    // Clean Project Gutenberg header/footer
+    let text = rawText;
+    const startMarkers = ['*** START OF', '***START OF', 'START OF THE PROJECT', 'START OF THIS PROJECT'];
+    const endMarkers = ['*** END OF', '***END OF', 'END OF THE PROJECT', 'END OF THIS PROJECT'];
+    for (const m of startMarkers) {
+      const idx = text.indexOf(m);
+      if (idx !== -1) { const nl = text.indexOf(String.fromCharCode(10), idx); text = text.slice(nl + 1); break; }
+    }
+    for (const m of endMarkers) {
+      const idx = text.indexOf(m);
+      if (idx !== -1) { text = text.slice(0, idx); break; }
+    }
+
+    // Split into paragraphs and chunks
+    const paragraphs = text.split(/[\r\n]{2,}/).map(p => p.trim()).filter(p => p.length > 20);
+    readerChunks = [];
+    let chunk = [];
+    let wordCount = 0;
+    for (const p of paragraphs) {
+      const words = p.split(/\s+/).length;
+      chunk.push(p);
+      wordCount += words;
+      if (wordCount >= CHUNK_WORDS) {
+        readerChunks.push(chunk.join('\n\n'));
+        chunk = []; wordCount = 0;
+      }
+    }
+    if (chunk.length) readerChunks.push(chunk.join('\n\n'));
+
+    renderReaderChunk();
+  } catch(e) {
+    document.getElementById('readerContent').innerHTML = `<p style="color:var(--text-muted);">Could not load book. ${e.message}</p>`;
+  }
+}
+
+function renderReaderChunk() {
+  if (!readerChunks.length) return;
+  const chunk = readerChunks[readerChunkIndex];
+  const paras = chunk.split(/\n\n|\r\n\r\n|\r\r/).filter(p => p.trim());
+  document.getElementById('readerContent').innerHTML = paras.map(p =>
+    `<p>${escHtml(p.replace(/[\r\n]+/g,' ').trim())}</p>`
+  ).join('');
+  document.getElementById('readerContent').style.fontSize = readerFontSize + 'px';
+
+  const total = readerChunks.length;
+  const current = readerChunkIndex + 1;
+  document.getElementById('readerProgress').innerHTML = `
+    <div style="display:flex; align-items:center; gap:12px; margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--border);">
+      ${readerChunkIndex > 0 ? `<button class="read-more-btn" style="background:transparent; color:var(--accent); border:1px solid var(--accent);" onclick="prevChunk()">← Previous</button>` : ''}
+      <span style="font-size:12px; color:var(--text-hint); flex:1; text-align:center;">Section ${current} of ${total}</span>
+      ${readerChunkIndex < total-1 ? `<button class="read-more-btn" onclick="nextChunk()">Continue reading →</button>` : '<span style="font-size:13px;color:var(--accent);">🎉 You finished this section!</span>'}
+    </div>`;
+
+  localStorage.setItem('read-pos-' + currentBookId, readerChunkIndex);
+  window.scrollTo(0, 0);
+}
+
+function nextChunk() {
+  if (readerChunkIndex < readerChunks.length - 1) { readerChunkIndex++; renderReaderChunk(); }
+}
+function prevChunk() {
+  if (readerChunkIndex > 0) { readerChunkIndex--; renderReaderChunk(); }
+}
+function changeFontSize(delta) {
+  readerFontSize = Math.min(24, Math.max(13, readerFontSize + delta));
+  document.getElementById('readerContent').style.fontSize = readerFontSize + 'px';
+}
+
+// ── NEWS ──────────────────────────────────────────────────
+const NEWS_FEEDS = {
+  football: [
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://feeds.bbci.co.uk/sport/football/rss.xml'),
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://www.theguardian.com/football/rss'),
+  ],
+  basketball: [
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://feeds.bbci.co.uk/sport/basketball/rss.xml'),
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://www.espn.com/espn/rss/nba/news'),
+  ],
+  tennis: [
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://feeds.bbci.co.uk/sport/tennis/rss.xml'),
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://www.theguardian.com/sport/tennis/rss'),
+  ]
+};
+
+let currentNewsSport = 'football';
+let newsCache = {};
+
+function switchNewsSport(sport, btn) {
+  currentNewsSport = sport;
+  document.querySelectorAll('.news-sport-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  loadNews(sport);
+}
+
+async function loadNews(sport) {
+  currentNewsSport = sport;
+  if (newsCache[sport] && Date.now() - newsCache[sport].time < 1800000) {
+    renderNews(newsCache[sport].items);
+    return;
+  }
+  document.getElementById('newsFeed').innerHTML = '<div class="news-loading"><div class="spinner"></div>Loading news…</div>';
+  const urls = NEWS_FEEDS[sport];
+  let allItems = [];
+
+  for (const url of urls) {
+    try {
+      const res = await fetch(url);
+      const text = await res.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(text, 'text/xml');
+      const items = Array.from(xml.querySelectorAll('item')).slice(0, 8);
+      for (const item of items) {
+        const title = item.querySelector('title')?.textContent || '';
+        const desc = item.querySelector('description')?.textContent || '';
+        const link = item.querySelector('link')?.textContent || '';
+        const pubDate = item.querySelector('pubDate')?.textContent || '';
+        const source = url.includes('bbc') ? 'BBC Sport' : url.includes('guardian') ? 'The Guardian' : 'ESPN';
+        if (title) allItems.push({ title, desc, link, pubDate, source });
+      }
+    } catch(e) { console.warn('Feed error:', e); }
+  }
+
+  // Remove duplicates by title
+  const seen = new Set();
+  allItems = allItems.filter(i => { if (seen.has(i.title)) return false; seen.add(i.title); return true; });
+  // Sort by date
+  allItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+  if (allItems.length === 0) {
+    document.getElementById('newsFeed').innerHTML = `<div class="news-error">Could not load news. Check your internet connection and try again.</div>`;
+    return;
+  }
+
+  newsCache[sport] = { items: allItems, time: Date.now() };
+  renderNews(allItems);
+}
+
+function renderNews(items) {
+  document.getElementById('newsFeed').innerHTML = items.map(item => {
+    // Clean HTML from description
+    const tmp = document.createElement('div');
+    tmp.innerHTML = item.desc;
+    const cleanDesc = (tmp.textContent || '').slice(0, 160).trim();
+    const timeAgo = item.pubDate ? formatNewsTime(new Date(item.pubDate)) : '';
+    return `
+    <a class="news-card" href="${escHtml(item.link)}" target="_blank" rel="noopener">
+      <div class="news-card-top">
+        <span class="news-source">${escHtml(item.source)}</span>
+        ${timeAgo ? `<span class="news-time">· ${timeAgo}</span>` : ''}
+      </div>
+      <div class="news-title">${escHtml(item.title)}</div>
+      ${cleanDesc ? `<div class="news-summary">${escHtml(cleanDesc)}…</div>` : ''}
+    </a>`;
+  }).join('');
+}
+
+function formatNewsTime(date) {
+  const diff = Math.floor((Date.now() - date) / 60000);
+  if (diff < 60) return diff + 'm ago';
+  if (diff < 1440) return Math.floor(diff/60) + 'h ago';
+  return Math.floor(diff/1440) + 'd ago';
+}
+
+
+
+// ── QUICK SAVE ────────────────────────────────────────────
+let qsSelectedText = '';
+let qsType = 'vocabulary';
+let qsSourceContext = '';
+
+function openQuickSave(text, source) {
+  qsSelectedText = text.trim();
+  qsSourceContext = source || '';
+  document.getElementById('qsSelected').textContent = '"' + qsSelectedText + '"';
+  document.getElementById('qsNote').value = '';
+  qsType = 'vocabulary';
+  document.querySelectorAll('.qs-type-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.type === 'vocabulary');
+  });
+  document.getElementById('quickSavePopup').classList.add('open');
+}
+
+function closeQuickSave() {
+  document.getElementById('quickSavePopup').classList.remove('open');
+  qsSelectedText = '';
+}
+
+function setQsType(btn) {
+  qsType = btn.dataset.type;
+  document.querySelectorAll('.qs-type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+async function quickSaveEntry() {
+  if (!qsSelectedText) return;
+  const note = document.getElementById('qsNote').value.trim();
+
+  // Determine title and example based on type
+  const isPhrase = qsType === 'phrase' || qsSelectedText.split(' ').length > 3;
+  const title = qsSelectedText.length > 60 ? qsSelectedText.slice(0, 60) + '…' : qsSelectedText;
+
+  const data = {
+    title,
+    type: qsType,
+    body: note,
+    example: qsSelectedText.length > 4 ? qsSelectedText : '',
+    source: qsSourceContext,
+    dict_pronunciation: '', dict_audio: '', dict_pos: '',
+    dict_definition: '', dict_example: '', dict_syllables: '', dict_uk_usage: ''
+  };
+
+  try {
+    await supaFetch('entries', { method: 'POST', body: JSON.stringify(data) });
+    closeQuickSave();
+    showToast('Saved to Journal ✓');
+    // Reload entries in background
+    loadEntries();
+  } catch(e) {
+    showToast('Error saving: ' + e.message);
+  }
+}
+
+// Selection-based save — detect text selection in reader and news
+function setupTextSelection() {
+  document.addEventListener('mouseup', handleTextSelection);
+  document.addEventListener('touchend', handleTextSelection);
+}
+
+function handleTextSelection(e) {
+  // Don't trigger inside modals or inputs
+  if (e.target.closest('.modal-overlay') || e.target.closest('.quick-save-popup')) return;
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+  // Only trigger inside read or news screens
+  const inRead = e.target.closest('#readScreen');
+  const inNews = e.target.closest('#newsScreen');
+  if (!inRead && !inNews) return;
+
+  setTimeout(() => {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed) return;
+    const text = sel.toString().trim();
+    if (text.length < 2 || text.length > 300) return;
+
+    // Get source context
+    const bookTitle = document.getElementById('readerTitle')?.textContent || '';
+    const newsTitle = e.target.closest('.news-card')?.querySelector('.news-title')?.textContent || '';
+    const source = bookTitle || newsTitle || '';
+
+    openQuickSave(text, source);
+    sel.removeAllRanges();
+  }, 100);
+}
+
+
+setupTextSelection();
+init();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('SW registered'))
+      .catch(err => console.log('SW error:', err));
+  });
+}
+</script>
+</body>
+</html>
