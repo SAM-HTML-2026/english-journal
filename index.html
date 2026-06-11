@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
 <title>My English Journal</title>
 <meta name="description" content="My personal English learning journal — vocabulary, grammar and Grammar in Use.">
 <meta name="theme-color" content="#2d6a4f">
@@ -46,7 +46,7 @@
     }
   }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; padding-bottom: env(safe-area-inset-bottom, 0px); }
-  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 1.5rem; padding-top: env(safe-area-inset-top, 0px); display: flex; align-items: center; justify-content: space-between; min-height: 56px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 6px; }
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 1.5rem; padding-top: calc(env(safe-area-inset-top, 0px) + 8px); display: flex; align-items: center; justify-content: space-between; min-height: 56px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 6px; }
   .nav-logo { font-family: 'Lora', serif; font-size: 18px; font-weight: 500; color: var(--text); letter-spacing: -0.02em; }
   .nav-logo span { color: var(--accent); }
   .nav-actions { display: flex; gap: 8px; }
@@ -562,7 +562,10 @@
     </div>
     <!-- Reader view -->
     <div class="reader-view" id="readerView">
-      <button class="read-back" id="readerBackBtn">← Book info</button>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:1.5rem;">
+        <button class="read-back" id="readerBackBtn" style="margin-bottom:0;">← Book info</button>
+        <button class="read-back" onclick="showJournal()" style="margin-bottom:0; margin-left:auto; color:var(--accent);">🏠 Home</button>
+      </div>
       <div class="page-header">
         <div>
           <h1 id="readerTitle" style="font-size:20px; font-family:'Lora',serif;"></h1>
@@ -1933,7 +1936,6 @@ function hideAllScreens() {
   document.getElementById('appScreen').style.display = 'none';
   document.getElementById('giuScreen').classList.remove('active');
   document.getElementById('readScreen').classList.remove('active');
-  document.getElementById('newsScreen').classList.remove('active');
 }
 
 function showRead() {
