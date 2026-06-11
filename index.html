@@ -45,7 +45,7 @@
       --tag-other-bg: #2a1a10; --tag-other-text: #d09070;
     }
   }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.6; }
   nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 8px 1.5rem; display: flex; align-items: center; justify-content: space-between; min-height: 56px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 6px; }
   .nav-logo { font-family: 'Lora', serif; font-size: 18px; font-weight: 500; color: var(--text); letter-spacing: -0.02em; }
   .nav-logo span { color: var(--accent); }
@@ -237,6 +237,11 @@
   .loading { text-align: center; padding: 3rem; color: var(--text-hint); font-size: 14px; }
   .spinner { width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 12px; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  @media all and (display-mode: standalone) {
+    nav { padding-top: max(env(safe-area-inset-top), 12px); }
+    body { padding-bottom: env(safe-area-inset-bottom); }
+  }
+
   @media (max-width: 768px) {
     /* NAV */
     nav { padding: 0 1rem; height: auto; min-height: 56px; flex-wrap: wrap; gap: 6px; padding-top: 8px; padding-bottom: 8px; }
@@ -653,9 +658,13 @@ async function supaFetch(path, options = {}) {
 
 // ── INIT ──────────────────────────────────────────────────
 function init() {
+  // Hide everything first
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('giuScreen').classList.remove('active');
+  document.getElementById('readScreen').classList.remove('active');
+
   const hash = location.hash.replace('#', '');
   if (hash === 'giu') {
-    document.getElementById('appScreen').style.display = 'none';
     document.getElementById('giuScreen').classList.add('active');
     loadGiuReflections();
     renderGiuList();
@@ -663,7 +672,6 @@ function init() {
     const parts = hash.split('-');
     const unitId = parseInt(parts[2]);
     const tab = parts[3] || 'learn';
-    document.getElementById('appScreen').style.display = 'none';
     document.getElementById('giuScreen').classList.add('active');
     loadGiuReflections().then(() => openGiuUnit(unitId, tab));
   } else if (hash === 'read') {
@@ -1621,7 +1629,7 @@ let reflectionsMap = {}; // unitId-label -> text
 let reflectionDebounce = null;
 
 function showGIU() {
-  document.getElementById('appScreen').style.display = 'none';
+  hideAllScreens();
   document.getElementById('giuScreen').classList.add('active');
   loadGiuReflections();
   renderGiuList();
@@ -2115,100 +2123,6 @@ function changeFontSize(delta) {
   document.getElementById('readerContent').style.fontSize = readerFontSize + 'px';
 }
 
-// ── NEWS ──────────────────────────────────────────────────
-const NEWS_FEEDS = {
-  football: [
-    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://feeds.bbci.co.uk/sport/football/rss.xml'),
-    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://www.theguardian.com/football/rss'),
-  ],
-  basketball: [
-    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://feeds.bbci.co.uk/sport/basketball/rss.xml'),
-    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://www.espn.com/espn/rss/nba/news'),
-  ],
-  tennis: [
-    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://feeds.bbci.co.uk/sport/tennis/rss.xml'),
-    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://www.theguardian.com/sport/tennis/rss'),
-  ]
-};
-
-let currentNewsSport = 'football';
-let newsCache = {};
-
-function switchNewsSport(sport, btn) {
-  currentNewsSport = sport;
-  document.querySelectorAll('.news-sport-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  loadNews(sport);
-}
-
-async function loadNews(sport) {
-  currentNewsSport = sport;
-  if (newsCache[sport] && Date.now() - newsCache[sport].time < 1800000) {
-    renderNews(newsCache[sport].items);
-    return;
-  }
-  document.getElementById('newsFeed').innerHTML = '<div class="news-loading"><div class="spinner"></div>Loading news…</div>';
-  const urls = NEWS_FEEDS[sport];
-  let allItems = [];
-
-  for (const url of urls) {
-    try {
-      const res = await fetch(url);
-      const text = await res.text();
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(text, 'text/xml');
-      const items = Array.from(xml.querySelectorAll('item')).slice(0, 8);
-      for (const item of items) {
-        const title = item.querySelector('title')?.textContent || '';
-        const desc = item.querySelector('description')?.textContent || '';
-        const link = item.querySelector('link')?.textContent || '';
-        const pubDate = item.querySelector('pubDate')?.textContent || '';
-        const source = url.includes('bbc') ? 'BBC Sport' : url.includes('guardian') ? 'The Guardian' : 'ESPN';
-        if (title) allItems.push({ title, desc, link, pubDate, source });
-      }
-    } catch(e) { console.warn('Feed error:', e); }
-  }
-
-  // Remove duplicates by title
-  const seen = new Set();
-  allItems = allItems.filter(i => { if (seen.has(i.title)) return false; seen.add(i.title); return true; });
-  // Sort by date
-  allItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-
-  if (allItems.length === 0) {
-    document.getElementById('newsFeed').innerHTML = `<div class="news-error">Could not load news. Check your internet connection and try again.</div>`;
-    return;
-  }
-
-  newsCache[sport] = { items: allItems, time: Date.now() };
-  renderNews(allItems);
-}
-
-function renderNews(items) {
-  document.getElementById('newsFeed').innerHTML = items.map(item => {
-    // Clean HTML from description
-    const tmp = document.createElement('div');
-    tmp.innerHTML = item.desc;
-    const cleanDesc = (tmp.textContent || '').slice(0, 160).trim();
-    const timeAgo = item.pubDate ? formatNewsTime(new Date(item.pubDate)) : '';
-    return `
-    <a class="news-card" href="${escHtml(item.link)}" target="_blank" rel="noopener">
-      <div class="news-card-top">
-        <span class="news-source">${escHtml(item.source)}</span>
-        ${timeAgo ? `<span class="news-time">· ${timeAgo}</span>` : ''}
-      </div>
-      <div class="news-title">${escHtml(item.title)}</div>
-      ${cleanDesc ? `<div class="news-summary">${escHtml(cleanDesc)}…</div>` : ''}
-    </a>`;
-  }).join('');
-}
-
-function formatNewsTime(date) {
-  const diff = Math.floor((Date.now() - date) / 60000);
-  if (diff < 60) return diff + 'm ago';
-  if (diff < 1440) return Math.floor(diff/60) + 'h ago';
-  return Math.floor(diff/1440) + 'd ago';
-}
 
 
 
